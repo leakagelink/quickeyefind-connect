@@ -84,7 +84,7 @@ function AdminPage() {
         <ul className="mt-3 divide-y divide-border">
           {employees.map((e) => (
             <li key={e.id} className="flex items-center gap-3 py-3">
-              <Avatar initials={e.initials} size={36} online={e.online} />
+              <Avatar initials={e.initials} src={e.photo} alt={e.name} size={36} online={e.online} />
               <span className="flex-1 text-sm font-medium">{e.name}</span>
               <span
                 className={`text-xs ${e.online ? "text-primary" : "text-muted-foreground"}`}

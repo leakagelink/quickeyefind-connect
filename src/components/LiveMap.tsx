@@ -41,6 +41,8 @@ export function LiveMap({
           <span className="relative block rounded-full bg-card p-0.5 shadow-pin">
             <Avatar
               initials={p.initials}
+              src={p.photo}
+              alt={p.name}
               size={38}
               online={p.online}
               ring={selectedId === p.id}

@@ -86,7 +86,7 @@ function UsersPage() {
               params={{ id: e.id }}
               className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm"
             >
-              <Avatar initials={e.initials} size={44} online={e.online} />
+              <Avatar initials={e.initials} src={e.photo} alt={e.name} size={44} online={e.online} />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold">{e.name}</span>
                 <span className="block text-xs text-muted-foreground">{e.phone}</span>

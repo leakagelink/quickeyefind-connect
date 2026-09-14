@@ -44,7 +44,7 @@ function AlertsPage() {
               .filter((a) => a.day === day)
               .map((a) => (
                 <li key={a.id} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm">
-                  <Avatar initials={a.initials} size={36} />
+                   <Avatar initials={a.initials} src={a.photo} alt={a.who} size={36} />
                   <span className="flex-1 text-sm">
                     <span className="font-semibold">{a.who}</span>{" "}
                     <span className="text-muted-foreground">{a.text}</span>

@@ -69,7 +69,7 @@ function MapPage() {
         <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/98 p-5 pb-6 shadow-card backdrop-blur-xl">
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
           <div className="flex items-start gap-3">
-            <Avatar initials={selected.initials} size={46} online={selected.online} />
+            <Avatar initials={selected.initials} src={selected.photo} alt={selected.name} size={46} online={selected.online} />
             <div className="flex-1">
               <p className="flex items-center gap-2 text-sm font-semibold">
                 {selected.name}
@@ -127,7 +127,7 @@ function MapPage() {
                 onClick={() => setSelected(e)}
                 className="h-auto w-16 shrink-0 flex-col gap-1.5 p-0 py-1"
               >
-                <Avatar initials={e.initials} size={48} online />
+                <Avatar initials={e.initials} src={e.photo} alt={e.name} size={48} online />
                 <span className="truncate text-[10px] text-muted-foreground">
                   {e.name.split(" ")[0]}
                 </span>
