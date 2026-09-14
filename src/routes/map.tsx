@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, Menu, Phone, Navigation, Search, X, MapPin } from "lucide-react";
+import { Bell, Menu, Phone, Navigation, Search, X, MapPin, Map, Users, User, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/quikeye-logo.png.asset.json";
 import { Avatar } from "@/components/Avatar";
@@ -30,6 +30,7 @@ export const Route = createFileRoute("/map")({
 function MapPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Employee | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const list = employees.filter(
     (e) =>
@@ -43,7 +44,7 @@ function MapPage() {
       <div className="relative h-[calc(100dvh-4.25rem)] min-h-[640px] sm:h-[calc(min(860px,100dvh-32px)-4.25rem)]">
       <LiveMap people={list} onSelect={setSelected} selectedId={selected?.id ?? null} className="absolute inset-0 h-full" />
       <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)]">
-        <Button variant="outline" size="icon" aria-label="Open menu" className="rounded-full bg-card/90 shadow-pin backdrop-blur-xl"><Menu className="h-5 w-5" /></Button>
+        <Button variant="outline" size="icon" aria-label="Open menu" aria-expanded={menuOpen} onClick={() => setMenuOpen(true)} className="rounded-full bg-card/90 shadow-pin backdrop-blur-xl"><Menu className="h-5 w-5" /></Button>
         <img src={logo.url} alt="Quike Eye" className="h-10 w-auto drop-shadow-sm" width={200} height={80} />
         <Link to="/alerts" aria-label="Alerts" className="relative flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 shadow-pin backdrop-blur-xl">
           <Bell className="h-5 w-5 text-foreground" />
@@ -52,6 +53,50 @@ function MapPage() {
           </span>
         </Link>
       </header>
+
+      {menuOpen && (
+        <div className="absolute inset-0 z-40">
+          <Button
+            variant="ghost"
+            aria-label="Close navigation"
+            onClick={() => setMenuOpen(false)}
+            className="absolute inset-0 h-full w-full rounded-none bg-foreground/35 p-0 backdrop-blur-sm"
+          />
+          <aside className="screen-enter absolute inset-y-0 left-0 flex w-[78%] max-w-xs flex-col bg-card px-4 pb-6 pt-[max(env(safe-area-inset-top),1rem)] shadow-card">
+            <div className="flex items-center justify-between border-b border-border pb-4">
+              <img src={logo.url} alt="Quike Eye" className="h-11 w-auto" width={200} height={80} />
+              <Button variant="ghost" size="icon" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <nav aria-label="Main navigation" className="mt-5 space-y-1.5">
+              {[
+                { to: "/map", label: "Live Map", icon: Map },
+                { to: "/users", label: "Team", icon: Users },
+                { to: "/alerts", label: "Alerts", icon: Bell },
+                { to: "/profile", label: "Profile", icon: User },
+                { to: "/admin", label: "Admin Panel", icon: ShieldCheck },
+              ].map(({ to, label, icon: Icon }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setMenuOpen(false)}
+                  activeProps={{ className: "bg-primary/12 text-primary" }}
+                  inactiveProps={{ className: "text-foreground hover:bg-muted" }}
+                  className="tap-feedback flex h-12 items-center gap-3 rounded-xl px-3 text-sm font-semibold"
+                >
+                  <Icon className="h-5 w-5" />
+                  {label}
+                </Link>
+              ))}
+            </nav>
+            <div className="mt-auto rounded-xl bg-secondary p-3">
+              <p className="text-xs font-semibold text-foreground">Quike Eye</p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">Find · Connect · Complete</p>
+            </div>
+          </aside>
+        </div>
+      )}
 
       <div className="absolute inset-x-0 top-[4.75rem] z-10 px-4">
         <label className="flex h-12 items-center gap-2 rounded-2xl border border-border bg-card/92 px-4 shadow-pin backdrop-blur-xl">
