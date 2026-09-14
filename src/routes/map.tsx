@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, Menu, Phone, Navigation, Search, X, MapPin, Map, Users, User, ShieldCheck } from "lucide-react";
+import { BarChart3, Bell, Menu, Phone, Navigation, Search, X, MapPin, Map, Users, User, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/quikeye-logo.png.asset.json";
 import { Avatar } from "@/components/Avatar";
@@ -75,7 +75,9 @@ function MapPage() {
                 { to: "/users", label: "Team", icon: Users },
                 { to: "/alerts", label: "Alerts", icon: Bell },
                 { to: "/profile", label: "Profile", icon: User },
+                { to: "/me", label: "My Panel", icon: User },
                 { to: "/admin", label: "Admin Panel", icon: ShieldCheck },
+                { to: "/reports", label: "Reports & Analytics", icon: BarChart3 },
               ].map(({ to, label, icon: Icon }) => (
                 <Link
                   key={to}
