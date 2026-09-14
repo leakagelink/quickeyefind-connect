@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Lock } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -50,12 +51,13 @@ function LoginPage() {
           />
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="flex h-12 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground"
+          size="lg"
+          className="w-full"
         >
           Continue
-        </button>
+        </Button>
 
         <p className="text-center text-xs text-muted-foreground">or</p>
 

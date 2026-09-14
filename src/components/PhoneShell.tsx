@@ -31,6 +31,3 @@ export function PageHeader({ title, subtitle, action }: { title: string; subtitl
     </header>
   );
 }
-    </div>
-  );
-}

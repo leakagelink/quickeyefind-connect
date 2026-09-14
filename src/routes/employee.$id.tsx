@@ -4,6 +4,7 @@ import { Avatar } from "@/components/Avatar";
 import { LiveMap } from "@/components/LiveMap";
 import { PhoneShell } from "@/components/PhoneShell";
 import { employees, history } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/employee/$id")({
   head: () => ({
@@ -71,9 +72,9 @@ function EmployeePage() {
         <p className="mt-1 text-xs text-muted-foreground">Updated {person.updated}</p>
 
         <div className="mt-4 flex gap-2">
-          <button className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground">
+          <Button className="flex-1">
             <Navigation className="h-4 w-4" /> Navigate
-          </button>
+          </Button>
           <a
             href={`tel:${person.phone.replace(/\s/g, "")}`}
             className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium"
