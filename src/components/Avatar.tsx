@@ -3,11 +3,15 @@ export function Avatar({
   size = 40,
   online,
   ring,
+  src,
+  alt = "",
 }: {
   initials: string;
   size?: number;
   online?: boolean;
   ring?: boolean;
+  src?: string;
+  alt?: string;
 }) {
   return (
     <span className="relative inline-flex shrink-0">
@@ -17,7 +21,16 @@ export function Avatar({
         }`}
         style={{ width: size, height: size, fontSize: size * 0.36 }}
       >
-        {initials}
+        {src ? (
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            width={512}
+            height={512}
+            className="h-full w-full rounded-full object-cover"
+          />
+        ) : initials}
       </span>
       {online !== undefined && (
         <span
