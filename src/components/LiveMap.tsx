@@ -23,8 +23,11 @@ export function LiveMap({
         src={mapBg}
         alt="Live map of employee locations"
         className="absolute inset-0 h-full w-full object-cover"
-        width={1024}
-        height={1536}
+        width={900}
+        height={1350}
+        decoding="async"
+        // @ts-expect-error fetchpriority is a valid HTML attribute
+        fetchpriority="high"
       />
       <span className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-info ring-4 ring-info/25" />
 
