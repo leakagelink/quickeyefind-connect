@@ -40,6 +40,62 @@ export const alerts = [
   { id: "a5", who: "Vikas Yadav", initials: "VY", photo: vikasPhoto, text: "is now offline", time: "07:30 PM", day: "Yesterday", online: false },
 ];
 
+export type AttendanceRow = {
+  id: string;
+  name: string;
+  initials: string;
+  photo: string;
+  team: string;
+  checkIn: string;
+  checkOut: string;
+  hours: number;
+  distanceKm: number;
+  status: "Present" | "Late" | "Absent";
+};
+
+export const attendanceToday: AttendanceRow[] = [
+  { id: "1", name: "Rohan Kumar", initials: "RK", photo: rohanPhoto, team: "Field Sales", checkIn: "09:05 AM", checkOut: "—", hours: 7.4, distanceKm: 32, status: "Present" },
+  { id: "2", name: "Neha Sharma", initials: "NS", photo: nehaPhoto, team: "Field Sales", checkIn: "09:12 AM", checkOut: "—", hours: 7.1, distanceKm: 27, status: "Present" },
+  { id: "3", name: "Amit Patel", initials: "AP", photo: amitPhoto, team: "Delivery", checkIn: "10:02 AM", checkOut: "—", hours: 6.2, distanceKm: 54, status: "Late" },
+  { id: "4", name: "Pooja Singh", initials: "PS", photo: poojaPhoto, team: "Delivery", checkIn: "08:55 AM", checkOut: "—", hours: 7.6, distanceKm: 41, status: "Present" },
+  { id: "5", name: "Vikas Yadav", initials: "VY", photo: vikasPhoto, team: "Service", checkIn: "09:20 AM", checkOut: "—", hours: 7.0, distanceKm: 18, status: "Present" },
+  { id: "6", name: "Anjali Verma", initials: "AV", photo: anjaliPhoto, team: "Service", checkIn: "09:48 AM", checkOut: "—", hours: 6.5, distanceKm: 22, status: "Late" },
+  { id: "7", name: "Karan Mehta", initials: "KM", photo: karanPhoto, team: "Field Sales", checkIn: "09:02 AM", checkOut: "04:35 PM", hours: 7.5, distanceKm: 38, status: "Present" },
+  { id: "8", name: "Sneha Rao", initials: "SR", photo: snehaPhoto, team: "Delivery", checkIn: "—", checkOut: "—", hours: 0, distanceKm: 0, status: "Absent" },
+];
+
+export const weeklyAnalytics = [
+  { day: "Mon", present: 8, absent: 0, avgHours: 7.8 },
+  { day: "Tue", present: 7, absent: 1, avgHours: 7.4 },
+  { day: "Wed", present: 8, absent: 0, avgHours: 8.1 },
+  { day: "Thu", present: 6, absent: 2, avgHours: 6.9 },
+  { day: "Fri", present: 7, absent: 1, avgHours: 7.6 },
+  { day: "Sat", present: 5, absent: 3, avgHours: 5.4 },
+  { day: "Today", present: 7, absent: 1, avgHours: 7.0 },
+];
+
+export const teamPerformance = [
+  { team: "Field Sales", visits: 42, distanceKm: 97, onTime: 92 },
+  { team: "Delivery", visits: 68, distanceKm: 133, onTime: 84 },
+  { team: "Service", visits: 25, distanceKm: 40, onTime: 88 },
+];
+
+export const myProfile = {
+  name: "Rahul Verma",
+  initials: "RV",
+  phone: "+91 98765 43210",
+  code: "QE-1042",
+  team: "Field Sales",
+  area: "Sector 63, Noida",
+  checkIn: "09:05 AM",
+  hoursToday: 7.4,
+  distanceToday: 32,
+  visitsToday: 6,
+  monthPresent: 22,
+  monthLate: 3,
+  monthAbsent: 1,
+};
+
 export const history = [
   { time: "09:05 AM", place: "Reached A-Block, Sector 63", note: "Check-in" },
   { time: "10:40 AM", place: "Client visit — Sector 62", note: "Stopped 25 min" },
