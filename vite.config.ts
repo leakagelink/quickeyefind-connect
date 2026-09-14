@@ -11,5 +11,21 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+    // Every screen below renders the same HTML for everyone (mock data, no auth/session),
+    // so render them once at build time and serve static HTML instead of SSR per request.
+    pages: [
+      { path: "/" },
+      { path: "/role" },
+      { path: "/login" },
+      { path: "/permission" },
+      { path: "/map" },
+      { path: "/users" },
+      { path: "/alerts" },
+      { path: "/profile" },
+      { path: "/me" },
+      { path: "/reports" },
+      { path: "/admin" },
+    ],
+    prerender: { enabled: true, autoStaticPathsDiscovery: false },
   },
 });
