@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MapRouteImport } from './routes/map'
@@ -17,10 +18,16 @@ import { Route as PermissionRouteImport } from './routes/permission'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RoleRouteImport } from './routes/role'
 import { Route as UsersRouteImport } from './routes/users'
+import { Route as EmployeeIdRouteImport } from './routes/employee.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AlertsRoute = AlertsRouteImport.update({
@@ -58,9 +65,15 @@ const UsersRoute = UsersRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmployeeIdRoute = EmployeeIdRouteImport.update({
+  id: '/employee/$id',
+  path: '/employee/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/alerts': typeof AlertsRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
@@ -68,9 +81,11 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/role': typeof RoleRoute
   '/users': typeof UsersRoute
+  '/employee/$id': typeof EmployeeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/alerts': typeof AlertsRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
@@ -78,10 +93,12 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/role': typeof RoleRoute
   '/users': typeof UsersRoute
+  '/employee/$id': typeof EmployeeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/alerts': typeof AlertsRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
@@ -89,11 +106,13 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/role': typeof RoleRoute
   '/users': typeof UsersRoute
+  '/employee/$id': typeof EmployeeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/alerts'
     | '/login'
     | '/map'
@@ -101,9 +120,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/role'
     | '/users'
+    | '/employee/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/alerts'
     | '/login'
     | '/map'
@@ -111,9 +132,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/role'
     | '/users'
+    | '/employee/$id'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/alerts'
     | '/login'
     | '/map'
@@ -121,10 +144,12 @@ export interface FileRouteTypes {
     | '/profile'
     | '/role'
     | '/users'
+    | '/employee/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AlertsRoute: typeof AlertsRoute
   LoginRoute: typeof LoginRoute
   MapRoute: typeof MapRoute
@@ -132,6 +157,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RoleRoute: typeof RoleRoute
   UsersRoute: typeof UsersRoute
+  EmployeeIdRoute: typeof EmployeeIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/alerts': {
@@ -192,11 +225,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/employee/$id': {
+      id: '/employee/$id'
+      path: '/employee/$id'
+      fullPath: '/employee/$id'
+      preLoaderRoute: typeof EmployeeIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AlertsRoute: AlertsRoute,
   LoginRoute: LoginRoute,
   MapRoute: MapRoute,
@@ -204,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RoleRoute: RoleRoute,
   UsersRoute: UsersRoute,
+  EmployeeIdRoute: EmployeeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
