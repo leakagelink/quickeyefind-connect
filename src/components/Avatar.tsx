@@ -26,8 +26,9 @@ export function Avatar({
             src={src}
             alt={alt}
             loading="lazy"
-            width={512}
-            height={512}
+            decoding="async"
+            width={size}
+            height={size}
             className="h-full w-full rounded-full object-cover"
           />
         ) : initials}
