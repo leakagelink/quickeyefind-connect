@@ -4,6 +4,7 @@ import { Avatar } from "@/components/Avatar";
 import { LiveMap } from "@/components/LiveMap";
 import { PhoneShell } from "@/components/PhoneShell";
 import { employees, history } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/employee/$id")({
   head: () => ({
@@ -33,7 +34,7 @@ function EmployeePage() {
   const person = Route.useLoaderData();
 
   return (
-    <PhoneShell>
+    <PhoneShell nav={false}>
       <header className="flex items-center gap-3 px-4 pt-5">
         <Link to="/users" className="text-muted-foreground">
           <ChevronLeft className="h-5 w-5" />
@@ -47,7 +48,7 @@ function EmployeePage() {
       </div>
 
       <section className="px-4 py-4">
-        <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+        <div className="screen-enter flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card">
           <Avatar initials={person.initials} size={46} online={person.online} />
           <div className="flex-1">
             <p className="text-sm font-semibold">{person.name}</p>
@@ -71,9 +72,9 @@ function EmployeePage() {
         <p className="mt-1 text-xs text-muted-foreground">Updated {person.updated}</p>
 
         <div className="mt-4 flex gap-2">
-          <button className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground">
+          <Button className="flex-1">
             <Navigation className="h-4 w-4" /> Navigate
-          </button>
+          </Button>
           <a
             href={`tel:${person.phone.replace(/\s/g, "")}`}
             className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium"

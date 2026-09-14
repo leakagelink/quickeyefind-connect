@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { MapPin, Smartphone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/permission")({
   head: () => ({
@@ -34,8 +35,8 @@ function PermissionPage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-8 text-center">
-      <div className="relative flex h-40 w-28 items-center justify-center rounded-3xl border-2 border-border bg-card">
+    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col items-center justify-center bg-background px-8 text-center sm:my-4 sm:min-h-[calc(100dvh-32px)] sm:rounded-[28px] sm:border sm:border-border sm:shadow-card">
+      <div className="screen-enter relative flex h-40 w-28 items-center justify-center rounded-3xl border-2 border-border bg-card shadow-card">
         <Smartphone className="h-16 w-16 text-muted-foreground/40" strokeWidth={1} />
         <MapPin className="absolute h-10 w-10 text-primary" />
       </div>
@@ -45,12 +46,13 @@ function PermissionPage() {
         To show live locations, we need access to your location.
       </p>
 
-      <button
+      <Button
         onClick={ask}
-        className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground"
+        size="lg"
+        className="mt-8 w-full"
       >
         Allow Location Access
-      </button>
+      </Button>
       <Link to="/map" className="mt-4 text-sm text-muted-foreground">
         Not Now
       </Link>

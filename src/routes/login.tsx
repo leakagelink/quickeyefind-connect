@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Lock } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -22,7 +23,7 @@ function LoginPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md px-6 py-8">
+    <div className="mx-auto min-h-[100dvh] w-full max-w-md bg-background px-6 py-8 sm:my-4 sm:min-h-[calc(100dvh-32px)] sm:rounded-[28px] sm:border sm:border-border sm:shadow-card">
       <Link to="/role" className="inline-flex text-muted-foreground">
         <ArrowLeft className="h-5 w-5" />
       </Link>
@@ -31,7 +32,7 @@ function LoginPage() {
       <p className="mt-1 text-center text-sm text-muted-foreground">Login to continue</p>
 
       <form
-        className="mt-8 space-y-4"
+        className="screen-enter mt-8 space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
           navigate({ to: "/permission" });
@@ -50,12 +51,13 @@ function LoginPage() {
           />
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="flex h-12 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground"
+          size="lg"
+          className="w-full"
         >
           Continue
-        </button>
+        </Button>
 
         <p className="text-center text-xs text-muted-foreground">or</p>
 

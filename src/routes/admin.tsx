@@ -35,7 +35,7 @@ function AdminPage() {
   ];
 
   return (
-    <PhoneShell>
+    <PhoneShell nav={false}>
       <header className="flex items-center gap-3 px-4 pt-5">
         <Link to="/profile" className="text-muted-foreground">
           <ChevronLeft className="h-5 w-5" />
@@ -44,9 +44,9 @@ function AdminPage() {
         <span className="w-5" />
       </header>
 
-      <div className="grid grid-cols-2 gap-3 px-4 pt-4">
+       <div className="screen-enter grid grid-cols-2 gap-3 px-4 pt-4">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-2xl border border-border bg-card p-4">
+          <div key={s.label} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
             <p className="text-2xl font-semibold text-primary">{s.value}</p>
             <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
           </div>

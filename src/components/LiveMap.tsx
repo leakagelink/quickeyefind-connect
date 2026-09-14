@@ -2,6 +2,7 @@ import { Crosshair, Minus, Plus } from "lucide-react";
 import mapBg from "@/assets/map-bg.jpg";
 import { Avatar } from "./Avatar";
 import type { Employee } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
 
 export function LiveMap({
   people,
@@ -17,7 +18,7 @@ export function LiveMap({
   controls?: boolean;
 }) {
   return (
-    <div className={`relative w-full overflow-hidden ${className}`}>
+    <div className={`relative w-full overflow-hidden bg-muted ${className}`}>
       <img
         src={mapBg}
         alt="Live map of employee locations"
@@ -32,11 +33,12 @@ export function LiveMap({
           key={p.id}
           type="button"
           onClick={() => onSelect?.(p)}
-          className="absolute -translate-x-1/2 -translate-y-1/2 transition-transform hover:scale-110"
+          className="group absolute -translate-x-1/2 -translate-y-1/2 transition-transform hover:scale-105 active:scale-95"
           style={{ left: `${p.x}%`, top: `${p.y}%` }}
           aria-label={`${p.name}, ${p.area}`}
         >
-          <span className="block rounded-full bg-card p-0.5 shadow-pin">
+          {p.online && <span className="absolute inset-0 rounded-full bg-primary/35 [animation:live-ring_2.2s_ease-out_infinite]" />}
+          <span className="relative block rounded-full bg-card p-0.5 shadow-pin">
             <Avatar
               initials={p.initials}
               size={38}
@@ -48,17 +50,17 @@ export function LiveMap({
       ))}
 
       {controls && (
-        <div className="absolute bottom-4 right-3 flex flex-col gap-2">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-card text-primary shadow-pin">
+        <div className="absolute bottom-5 right-4 flex flex-col gap-2">
+          <Button variant="outline" size="icon" aria-label="Center map" className="h-11 w-11 rounded-xl bg-card/95 text-primary shadow-pin backdrop-blur">
             <Crosshair className="h-5 w-5" />
-          </span>
-          <span className="flex flex-col overflow-hidden rounded-full bg-card shadow-pin">
-            <span className="flex h-9 w-10 items-center justify-center text-foreground">
+          </Button>
+          <span className="flex flex-col overflow-hidden rounded-xl border border-border bg-card/95 shadow-pin backdrop-blur">
+            <Button variant="ghost" size="icon" aria-label="Zoom in" className="h-10 w-11 rounded-none">
               <Plus className="h-4 w-4" />
-            </span>
-            <span className="flex h-9 w-10 items-center justify-center border-t border-border text-foreground">
+            </Button>
+            <Button variant="ghost" size="icon" aria-label="Zoom out" className="h-10 w-11 rounded-none border-t border-border">
               <Minus className="h-4 w-4" />
-            </span>
+            </Button>
           </span>
         </div>
       )}
