@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  BarChart3,
   ChevronRight,
   FileBarChart,
+  UserCircle2,
   HelpCircle,
   Info,
   LogOut,
@@ -63,11 +65,29 @@ function ProfilePage() {
         </div>
 
         <Link
+          to="/me"
+          className="mt-3 flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
+        >
+          <UserCircle2 className="h-5 w-5 text-primary" />
+          <span className="flex-1 text-sm font-medium">My Panel — Attendance &amp; Sharing</span>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>
+
+        <Link
           to="/admin"
           className="mt-3 flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
         >
           <FileBarChart className="h-5 w-5 text-info" />
-          <span className="flex-1 text-sm font-medium">Admin Panel — Reports &amp; Teams</span>
+          <span className="flex-1 text-sm font-medium">Admin Panel — Teams &amp; Attendance</span>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>
+
+        <Link
+          to="/reports"
+          className="mt-3 flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
+        >
+          <BarChart3 className="h-5 w-5 text-gold" />
+          <span className="flex-1 text-sm font-medium">Reports &amp; Analytics</span>
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </Link>
 

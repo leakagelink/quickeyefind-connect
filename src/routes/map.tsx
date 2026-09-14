@@ -75,7 +75,9 @@ function MapPage() {
                 { to: "/users", label: "Team", icon: Users },
                 { to: "/alerts", label: "Alerts", icon: Bell },
                 { to: "/profile", label: "Profile", icon: User },
+                { to: "/me", label: "My Panel", icon: User },
                 { to: "/admin", label: "Admin Panel", icon: ShieldCheck },
+                { to: "/reports", label: "Reports & Analytics", icon: BarChart3 },
               ].map(({ to, label, icon: Icon }) => (
                 <Link
                   key={to}

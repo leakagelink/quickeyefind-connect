@@ -14,8 +14,10 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as MeRouteImport } from './routes/me'
 import { Route as PermissionRouteImport } from './routes/permission'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as RoleRouteImport } from './routes/role'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as EmployeeIdRouteImport } from './routes/employee.$id'
@@ -45,6 +47,11 @@ const MapRoute = MapRouteImport.update({
   path: '/map',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MeRoute = MeRouteImport.update({
+  id: '/me',
+  path: '/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PermissionRoute = PermissionRouteImport.update({
   id: '/permission',
   path: '/permission',
@@ -53,6 +60,11 @@ const PermissionRoute = PermissionRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoleRoute = RoleRouteImport.update({
@@ -77,8 +89,10 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof AlertsRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
+  '/me': typeof MeRoute
   '/permission': typeof PermissionRoute
   '/profile': typeof ProfileRoute
+  '/reports': typeof ReportsRoute
   '/role': typeof RoleRoute
   '/users': typeof UsersRoute
   '/employee/$id': typeof EmployeeIdRoute
@@ -89,8 +103,10 @@ export interface FileRoutesByTo {
   '/alerts': typeof AlertsRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
+  '/me': typeof MeRoute
   '/permission': typeof PermissionRoute
   '/profile': typeof ProfileRoute
+  '/reports': typeof ReportsRoute
   '/role': typeof RoleRoute
   '/users': typeof UsersRoute
   '/employee/$id': typeof EmployeeIdRoute
@@ -102,8 +118,10 @@ export interface FileRoutesById {
   '/alerts': typeof AlertsRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
+  '/me': typeof MeRoute
   '/permission': typeof PermissionRoute
   '/profile': typeof ProfileRoute
+  '/reports': typeof ReportsRoute
   '/role': typeof RoleRoute
   '/users': typeof UsersRoute
   '/employee/$id': typeof EmployeeIdRoute
@@ -116,8 +134,10 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/login'
     | '/map'
+    | '/me'
     | '/permission'
     | '/profile'
+    | '/reports'
     | '/role'
     | '/users'
     | '/employee/$id'
@@ -128,8 +148,10 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/login'
     | '/map'
+    | '/me'
     | '/permission'
     | '/profile'
+    | '/reports'
     | '/role'
     | '/users'
     | '/employee/$id'
@@ -140,8 +162,10 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/login'
     | '/map'
+    | '/me'
     | '/permission'
     | '/profile'
+    | '/reports'
     | '/role'
     | '/users'
     | '/employee/$id'
@@ -153,8 +177,10 @@ export interface RootRouteChildren {
   AlertsRoute: typeof AlertsRoute
   LoginRoute: typeof LoginRoute
   MapRoute: typeof MapRoute
+  MeRoute: typeof MeRoute
   PermissionRoute: typeof PermissionRoute
   ProfileRoute: typeof ProfileRoute
+  ReportsRoute: typeof ReportsRoute
   RoleRoute: typeof RoleRoute
   UsersRoute: typeof UsersRoute
   EmployeeIdRoute: typeof EmployeeIdRoute
@@ -197,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/me': {
+      id: '/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof MeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/permission': {
       id: '/permission'
       path: '/permission'
@@ -209,6 +242,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/role': {
@@ -241,8 +281,10 @@ const rootRouteChildren: RootRouteChildren = {
   AlertsRoute: AlertsRoute,
   LoginRoute: LoginRoute,
   MapRoute: MapRoute,
+  MeRoute: MeRoute,
   PermissionRoute: PermissionRoute,
   ProfileRoute: ProfileRoute,
+  ReportsRoute: ReportsRoute,
   RoleRoute: RoleRoute,
   UsersRoute: UsersRoute,
   EmployeeIdRoute: EmployeeIdRoute,
