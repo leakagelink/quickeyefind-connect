@@ -33,7 +33,7 @@ function EmployeePage() {
   const person = Route.useLoaderData();
 
   return (
-    <PhoneShell>
+    <PhoneShell nav={false}>
       <header className="flex items-center gap-3 px-4 pt-5">
         <Link to="/users" className="text-muted-foreground">
           <ChevronLeft className="h-5 w-5" />
@@ -47,7 +47,7 @@ function EmployeePage() {
       </div>
 
       <section className="px-4 py-4">
-        <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+        <div className="screen-enter flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card">
           <Avatar initials={person.initials} size={46} online={person.online} />
           <div className="flex-1">
             <p className="text-sm font-semibold">{person.name}</p>

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
 import { employees } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/PhoneShell";
 
 export const Route = createFileRoute("/users")({
   head: () => ({
@@ -44,16 +46,10 @@ function UsersPage() {
 
   return (
     <PhoneShell>
-      <header className="flex items-center gap-3 px-4 pt-5">
-        <Link to="/map" className="text-muted-foreground">
-          <ChevronLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="flex-1 text-center text-base font-semibold">Online Users</h1>
-        <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
-      </header>
+      <PageHeader title="Team" subtitle={`${employees.filter((e) => e.online).length} active right now`} action={<Button variant="outline" size="icon" aria-label="Filters"><SlidersHorizontal /></Button>} />
 
       <div className="px-4 pt-4">
-        <label className="flex h-11 items-center gap-2 rounded-xl border border-input bg-card px-3">
+        <label className="flex h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 shadow-sm">
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
             value={query}
@@ -63,19 +59,17 @@ function UsersPage() {
           />
         </label>
 
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+        <div className="hide-scrollbar mt-3 flex gap-2 overflow-x-auto pb-1">
           {filters.map((f) => (
-            <button
+            <Button
+              variant={filter === f ? "default" : "outline"}
+              size="sm"
               key={f}
               onClick={() => setFilter(f)}
-              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium ${
-                filter === f
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-border bg-card text-muted-foreground"
-              }`}
+              className="shrink-0 rounded-full"
             >
               {f}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -84,13 +78,13 @@ function UsersPage() {
         </p>
       </div>
 
-      <ul className="mt-2 divide-y divide-border px-4">
+      <ul className="screen-enter mt-2 space-y-2 px-4">
         {list.map((e) => (
           <li key={e.id}>
             <Link
               to="/employee/$id"
               params={{ id: e.id }}
-              className="flex items-center gap-3 py-3"
+              className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm"
             >
               <Avatar initials={e.initials} size={44} online={e.online} />
               <span className="min-w-0 flex-1">

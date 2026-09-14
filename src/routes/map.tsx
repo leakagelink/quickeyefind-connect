@@ -6,6 +6,7 @@ import { Avatar } from "@/components/Avatar";
 import { LiveMap } from "@/components/LiveMap";
 import { PhoneShell } from "@/components/PhoneShell";
 import { employees, type Employee } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/map")({
   head: () => ({
@@ -38,11 +39,13 @@ function MapPage() {
   const online = employees.filter((e) => e.online);
 
   return (
-    <PhoneShell>
-      <header className="flex items-center justify-between px-4 pt-4">
-        <Menu className="h-5 w-5 text-foreground" />
-        <img src={logo.url} alt="Quike Eye" className="h-9" width={200} height={80} />
-        <Link to="/alerts" className="relative">
+    <PhoneShell immersive>
+      <div className="relative h-[calc(100dvh-4.25rem)] min-h-[640px] sm:h-[calc(min(860px,100dvh-32px)-4.25rem)]">
+      <LiveMap people={list} onSelect={setSelected} selectedId={selected?.id ?? null} className="absolute inset-0 h-full" />
+      <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)]">
+        <Button variant="outline" size="icon" aria-label="Open menu" className="rounded-full bg-card/90 shadow-pin backdrop-blur-xl"><Menu className="h-5 w-5" /></Button>
+        <img src={logo.url} alt="Quike Eye" className="h-10 w-auto drop-shadow-sm" width={200} height={80} />
+        <Link to="/alerts" aria-label="Alerts" className="relative flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card/90 shadow-pin backdrop-blur-xl">
           <Bell className="h-5 w-5 text-foreground" />
           <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[9px] font-semibold text-destructive-foreground">
             3
@@ -50,8 +53,8 @@ function MapPage() {
         </Link>
       </header>
 
-      <div className="px-4 pb-3 pt-3">
-        <label className="flex h-11 items-center gap-2 rounded-xl border border-input bg-card px-3">
+      <div className="absolute inset-x-0 top-[4.75rem] z-10 px-4">
+        <label className="flex h-12 items-center gap-2 rounded-2xl border border-border bg-card/92 px-4 shadow-pin backdrop-blur-xl">
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
             value={query}
@@ -62,10 +65,8 @@ function MapPage() {
         </label>
       </div>
 
-      <LiveMap people={list} onSelect={setSelected} selectedId={selected?.id ?? null} />
-
       {selected ? (
-        <section className="-mt-4 rounded-t-3xl border-t border-border bg-card p-4 shadow-card">
+        <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/98 p-5 pb-6 shadow-card backdrop-blur-xl">
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
           <div className="flex items-start gap-3">
             <Avatar initials={selected.initials} size={46} online={selected.online} />
@@ -84,9 +85,9 @@ function MapPage() {
               </p>
               <p className="text-xs text-muted-foreground">{selected.phone}</p>
             </div>
-            <button onClick={() => setSelected(null)} aria-label="Close">
+            <Button variant="ghost" size="icon" onClick={() => setSelected(null)} aria-label="Close" className="h-9 w-9">
               <X className="h-4 w-4 text-muted-foreground" />
-            </button>
+            </Button>
           </div>
 
           <p className="mt-3 text-[11px] uppercase tracking-wide text-muted-foreground">
@@ -99,9 +100,9 @@ function MapPage() {
           <p className="mt-1 text-xs text-muted-foreground">Updated {selected.updated}</p>
 
           <div className="mt-4 space-y-2">
-            <button className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground">
+            <Button className="w-full">
               <Navigation className="h-4 w-4" /> Navigate
-            </button>
+            </Button>
             <a
               href={`tel:${selected.phone.replace(/\s/g, "")}`}
               className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-border text-sm font-medium"
@@ -111,29 +112,31 @@ function MapPage() {
           </div>
         </section>
       ) : (
-        <section className="-mt-4 rounded-t-3xl border-t border-border bg-card p-4 shadow-card">
+        <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/96 p-5 pb-5 shadow-card backdrop-blur-xl">
+          <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold">Online Users</h2>
             <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="h-2 w-2 rounded-full bg-primary" /> {online.length}
             </span>
           </div>
-          <div className="mt-3 flex gap-4 overflow-x-auto pb-1">
+          <div className="hide-scrollbar mt-4 flex gap-4 overflow-x-auto pb-1">
             {online.map((e) => (
-              <button
+              <Button variant="ghost"
                 key={e.id}
                 onClick={() => setSelected(e)}
-                className="flex w-16 shrink-0 flex-col items-center gap-1.5"
+                className="h-auto w-16 shrink-0 flex-col gap-1.5 p-0 py-1"
               >
                 <Avatar initials={e.initials} size={48} online />
                 <span className="truncate text-[10px] text-muted-foreground">
                   {e.name.split(" ")[0]}
                 </span>
-              </button>
+              </Button>
             ))}
           </div>
         </section>
       )}
+      </div>
     </PhoneShell>
   );
 }

@@ -34,8 +34,8 @@ function PermissionPage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-8 text-center">
-      <div className="relative flex h-40 w-28 items-center justify-center rounded-3xl border-2 border-border bg-card">
+    <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col items-center justify-center bg-background px-8 text-center sm:my-4 sm:min-h-[calc(100dvh-32px)] sm:rounded-[28px] sm:border sm:border-border sm:shadow-card">
+      <div className="screen-enter relative flex h-40 w-28 items-center justify-center rounded-3xl border-2 border-border bg-card shadow-card">
         <Smartphone className="h-16 w-16 text-muted-foreground/40" strokeWidth={1} />
         <MapPin className="absolute h-10 w-10 text-primary" />
       </div>

@@ -34,18 +34,18 @@ const roles = [
 
 function RolePage() {
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md px-6 py-12">
+    <div className="mx-auto min-h-[100dvh] w-full max-w-md bg-background px-6 py-12 sm:my-4 sm:min-h-[calc(100dvh-32px)] sm:rounded-[28px] sm:border sm:border-border sm:shadow-card">
       <h1 className="text-center text-2xl font-semibold">Select Your Role</h1>
       <p className="mt-1 text-center text-sm text-muted-foreground">
         Choose how you want to continue
       </p>
 
-      <div className="mt-8 space-y-4">
+       <div className="screen-enter mt-8 space-y-4">
         {roles.map(({ icon: Icon, title, desc }) => (
           <Link
             key={title}
             to="/login"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-card"
+            className="tap-feedback flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-card"
           >
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/12 text-primary">
               <Icon className="h-5 w-5" />

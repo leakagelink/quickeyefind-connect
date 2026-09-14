@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
+import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -46,7 +47,7 @@ function ProfilePage() {
 
   return (
     <PhoneShell>
-      <header className="rounded-b-3xl bg-primary px-6 pb-8 pt-8 text-center text-primary-foreground">
+      <header className="bg-navy px-6 pb-8 pt-9 text-center text-primary-foreground">
         <span className="inline-flex rounded-full bg-primary-foreground/15 p-1">
           <Avatar initials="RV" size={76} />
         </span>
@@ -58,19 +59,7 @@ function ProfilePage() {
         <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
           <MapPin className="h-5 w-5 text-primary" />
           <span className="flex-1 text-sm font-medium">Share Live Location</span>
-          <button
-            onClick={() => setShare((s) => !s)}
-            className={`h-6 w-11 rounded-full transition-colors ${
-              share ? "bg-primary" : "bg-muted"
-            }`}
-            aria-label="Toggle live location sharing"
-          >
-            <span
-              className={`block h-5 w-5 rounded-full bg-card transition-transform ${
-                share ? "translate-x-[22px]" : "translate-x-0.5"
-              }`}
-            />
-          </button>
+          <Switch checked={share} onCheckedChange={setShare} aria-label="Toggle live location sharing" />
         </div>
 
         <Link
