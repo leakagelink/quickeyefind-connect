@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Quike Eye Connect
+
+Employee live tracinkge app.,User,admin, employee ''ye app bana kar do ui ka  image bhi bhej diya or key features bhi bhej diya logo bhi bhej diya or app Name - 'quike eye' Slogan 'Find connect complete'
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://quickeyefind-connect.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/0ff7cda9-f5b1-44aa-ab84-132da3aa918e).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
