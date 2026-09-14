@@ -1,24 +1,62 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { UserRound } from "lucide-react";
+import logo from "@/assets/quikeye-logo.png.asset.json";
+import { LiveMap } from "@/components/LiveMap";
+import { employees } from "@/lib/mock-data";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Quike Eye — Live Employee Tracking App" },
+      {
+        name: "description",
+        content:
+          "Quike Eye — find, connect, complete. Live employee location tracking with maps, alerts and team management.",
+      },
+      { property: "og:title", content: "Quike Eye — Live Employee Tracking" },
+      {
+        property: "og:description",
+        content: "Live location tracking for teams. Find, connect, complete.",
+      },
+    ],
+  }),
+  component: Splash,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Splash() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-background">
+      <div className="absolute inset-0 opacity-45">
+        <LiveMap people={employees.slice(0, 5)} controls={false} className="h-full" />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
+
+      <div className="relative z-10 mt-auto px-6 pb-10 text-center">
+        <img
+          src={logo.url}
+          alt="Quike Eye logo"
+          className="mx-auto w-56"
+          width={512}
+          height={512}
+        />
+        <h1 className="mt-2 text-xl font-semibold text-foreground">Quike Eye</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Find · Connect · Complete</p>
+
+        <div className="mt-8 space-y-3">
+          <Link
+            to="/role"
+            className="flex h-12 items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-card"
+          >
+            Login / Register
+          </Link>
+          <Link
+            to="/permission"
+            className="flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-card text-sm font-medium text-foreground"
+          >
+            <UserRound className="h-4 w-4" /> Continue as Guest
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
