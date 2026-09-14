@@ -1,0 +1,59 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { MapPin, Smartphone } from "lucide-react";
+
+export const Route = createFileRoute("/permission")({
+  head: () => ({
+    meta: [
+      { title: "Location Permission — Quike Eye" },
+      {
+        name: "description",
+        content: "Allow location access so Quike Eye can show live employee locations on the map.",
+      },
+      { property: "og:title", content: "Location Permission — Quike Eye" },
+      {
+        property: "og:description",
+        content: "Enable location access for live tracking in Quike Eye.",
+      },
+    ],
+  }),
+  component: PermissionPage,
+});
+
+function PermissionPage() {
+  const navigate = useNavigate();
+
+  const ask = () => {
+    if (typeof navigator !== "undefined" && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        () => navigate({ to: "/map" }),
+        () => navigate({ to: "/map" }),
+      );
+    } else {
+      navigate({ to: "/map" });
+    }
+  };
+
+  return (
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-8 text-center">
+      <div className="relative flex h-40 w-28 items-center justify-center rounded-3xl border-2 border-border bg-card">
+        <Smartphone className="h-16 w-16 text-muted-foreground/40" strokeWidth={1} />
+        <MapPin className="absolute h-10 w-10 text-primary" />
+      </div>
+
+      <h1 className="mt-8 text-xl font-semibold">Location Permission</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        To show live locations, we need access to your location.
+      </p>
+
+      <button
+        onClick={ask}
+        className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground"
+      >
+        Allow Location Access
+      </button>
+      <Link to="/map" className="mt-4 text-sm text-muted-foreground">
+        Not Now
+      </Link>
+    </div>
+  );
+}
