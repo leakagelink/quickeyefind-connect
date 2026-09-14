@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Users2 } from "lucide-react";
+import { BarChart3, ChevronLeft, ChevronRight, Users2 } from "lucide-react";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
 import { employees } from "@/lib/mock-data";
@@ -43,6 +43,24 @@ function AdminPage() {
         <h1 className="flex-1 text-center text-base font-semibold">Admin Panel</h1>
         <span className="w-5" />
       </header>
+
+      <div className="px-4 pt-4">
+        <Link
+          to="/reports"
+          className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm"
+        >
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/15 text-gold">
+            <BarChart3 className="h-5 w-5" />
+          </span>
+          <span className="flex-1">
+            <span className="block text-sm font-semibold">Reports &amp; Analytics</span>
+            <span className="block text-xs text-muted-foreground">
+              Attendance, hours, distance and team performance
+            </span>
+          </span>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>
+      </div>
 
        <div className="screen-enter grid grid-cols-2 gap-3 px-4 pt-4">
         {stats.map((s) => (

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bell, Menu, Phone, Navigation, Search, X, MapPin, Map, Users, User, ShieldCheck } from "lucide-react";
+import { BarChart3, Bell, Menu, Phone, Navigation, Search, X, MapPin, Map, Users, User, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/quikeye-logo.png.asset.json";
 import { Avatar } from "@/components/Avatar";
