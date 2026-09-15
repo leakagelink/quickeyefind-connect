@@ -115,12 +115,12 @@ function MyPanelPage() {
 
   return (
     <PhoneShell>
-      <header className="bg-navy px-5 pb-8 pt-6 text-primary-foreground">
+      <header className="bg-navy px-5 pb-8 pt-6 text-primary-foreground lg:rounded-3xl">
         <div className="flex items-center gap-3">
           <Link to="/profile" aria-label="Back" className="text-primary-foreground/80">
             <ChevronLeft className="h-5 w-5" />
           </Link>
-          <h1 className="flex-1 text-center text-base font-semibold text-primary-foreground">
+          <h1 className="flex-1 text-center text-base font-semibold text-primary-foreground lg:text-left lg:text-xl">
             My Panel
           </h1>
           <span className="w-5" />
@@ -148,7 +148,7 @@ function MyPanelPage() {
         </div>
       </header>
 
-      <div className="px-4 pb-4">
+      <div className="px-4 pb-4 lg:px-0">
         <div className="screen-enter -mt-5 rounded-2xl border border-border bg-card p-4 shadow-card">
           <div className="flex items-center gap-3">
             <ShieldCheck className="h-5 w-5 text-primary" />
@@ -192,7 +192,7 @@ function MyPanelPage() {
               <div className="screen-enter mt-3 overflow-hidden rounded-2xl border border-border shadow-card">
                 <GoogleMapView
                   people={mates}
-                  className="h-44"
+                  className="h-44 lg:h-72"
                   controls={false}
                   onSelect={(e) => setSelectedMate(e.id)}
                   selectedId={selectedMate ?? undefined}

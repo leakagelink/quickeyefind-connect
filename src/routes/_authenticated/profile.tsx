@@ -74,7 +74,7 @@ function ProfilePage() {
 
   return (
     <PhoneShell>
-      <header className="bg-navy px-6 pb-8 pt-9 text-center text-primary-foreground">
+      <header className="bg-navy px-6 pb-8 pt-9 text-center text-primary-foreground lg:rounded-3xl">
         <span className="inline-flex rounded-full bg-primary-foreground/15 p-1">
           <Avatar
             initials={profile?.initials ?? "…"}
@@ -94,7 +94,7 @@ function ProfilePage() {
         )}
       </header>
 
-      <div className="mt-4 px-4">
+      <div className="mt-4 px-4 lg:mx-auto lg:max-w-2xl lg:px-0">
         <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
           <MapPin className="h-5 w-5 text-primary" />
           <span className="flex-1 text-sm font-medium">Share Live Location</span>

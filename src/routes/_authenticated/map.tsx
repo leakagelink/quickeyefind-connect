@@ -90,7 +90,7 @@ function MapPage() {
 
   return (
     <PhoneShell immersive>
-      <div className="relative h-[calc(100dvh-4.25rem)] min-h-[640px] sm:h-[calc(min(860px,100dvh-32px)-4.25rem)]">
+      <div className="relative h-[calc(100dvh-4.25rem)] min-h-[640px] sm:h-[calc(min(860px,100dvh-32px)-4.25rem)] lg:h-[100dvh] lg:min-h-0">
         <GoogleMapView
           people={list}
           onSelect={setSelected}
@@ -98,18 +98,18 @@ function MapPage() {
           className="absolute inset-0 h-full"
         />
 
-        <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)]">
+        <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),1rem)] lg:justify-end lg:px-5 lg:pt-5">
           <Button
             variant="outline"
             size="icon"
             aria-label="Open menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(true)}
-            className="rounded-full bg-card/90 shadow-pin backdrop-blur-xl"
+            className="rounded-full bg-card/90 shadow-pin backdrop-blur-xl lg:hidden"
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <AppLogo alt="Quike Eye" className="h-10 w-auto drop-shadow-sm" width={200} height={80} priority />
+          <AppLogo alt="Quike Eye" className="h-10 w-auto drop-shadow-sm lg:hidden" width={200} height={80} priority />
           <Link
             to="/alerts"
             aria-label="Alerts"
@@ -170,7 +170,7 @@ function MapPage() {
           </div>
         )}
 
-        <div className="absolute inset-x-0 top-[4.75rem] z-10 px-4">
+        <div className="absolute inset-x-0 top-[4.75rem] z-10 px-4 lg:inset-x-auto lg:left-5 lg:top-5 lg:w-[380px] lg:px-0">
           <label className="flex h-12 items-center gap-2 rounded-2xl border border-border bg-card/92 px-4 shadow-pin backdrop-blur-xl">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
@@ -183,8 +183,8 @@ function MapPage() {
         </div>
 
         {selected ? (
-          <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/98 p-5 pb-6 shadow-card backdrop-blur-xl">
-            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
+          <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/98 p-5 pb-6 shadow-card backdrop-blur-xl lg:inset-x-auto lg:bottom-5 lg:left-5 lg:w-[380px] lg:rounded-3xl lg:border">
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border lg:hidden" />
             <div className="flex items-start gap-3">
               <Avatar initials={selected.initials} src={selected.photoUrl ?? undefined} alt={selected.name} size={46} online={selected.online} />
               <div className="flex-1">
@@ -234,8 +234,8 @@ function MapPage() {
             </div>
           </section>
         ) : (
-          <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/96 p-5 pb-5 shadow-card backdrop-blur-xl">
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
+          <section className="screen-enter absolute inset-x-0 bottom-0 z-20 rounded-t-[28px] border-t border-border bg-card/96 p-5 pb-5 shadow-card backdrop-blur-xl lg:inset-x-auto lg:bottom-5 lg:left-5 lg:w-[380px] lg:rounded-3xl lg:border">
+            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border lg:hidden" />
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold">Online Users</h2>
               <span className="flex items-center gap-1.5 text-xs text-muted-foreground">

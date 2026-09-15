@@ -86,7 +86,7 @@ function UsersPage() {
         }
       />
 
-      <div className="px-4 pt-4">
+      <div className="px-4 pt-4 lg:px-0">
         <label className="flex h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 shadow-sm">
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
@@ -141,7 +141,7 @@ function UsersPage() {
           No employee found — try a different name, location or filter.
         </p>
       )}
-      <ul className="screen-enter mt-2 space-y-2 px-4">
+      <ul className="screen-enter mt-2 space-y-2 px-4 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 lg:px-0 xl:grid-cols-3">
         {list.map((e) => (
           <li key={e.id}>
             <Link
