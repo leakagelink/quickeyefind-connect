@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BarChart3, ChevronLeft, ChevronRight, Users2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
-import { employees } from "@/lib/mock-data";
+import { getAdminOverview } from "@/lib/tracking.functions";
+import { fmtClock } from "@/lib/tracking.types";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -24,15 +27,21 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 function AdminPage() {
-  const online = employees.filter((e) => e.online).length;
-  const teams = [...new Set(employees.map((e) => e.team))];
+  const fetchAdmin = useServerFn(getAdminOverview);
+  const { data, isPending } = useQuery({
+    queryKey: ["admin"],
+    queryFn: fetchAdmin,
+    refetchInterval: 30_000,
+  });
 
   const stats = [
-    { label: "Total staff", value: employees.length },
-    { label: "Online now", value: online },
-    { label: "Offline", value: employees.length - online },
-    { label: "Present today", value: employees.length - 1 },
+    { label: "Total staff", value: data?.stats.total ?? 0 },
+    { label: "Online now", value: data?.stats.online ?? 0 },
+    { label: "Offline", value: data?.stats.offline ?? 0 },
+    { label: "Present today", value: data?.stats.present ?? 0 },
   ];
+  const teams = data?.teams ?? [];
+  const attendance = data?.attendance ?? [];
 
   return (
     <PhoneShell nav={false}>
@@ -62,7 +71,7 @@ function AdminPage() {
         </Link>
       </div>
 
-       <div className="screen-enter grid grid-cols-2 gap-3 px-4 pt-4">
+      <div className="screen-enter grid grid-cols-2 gap-3 px-4 pt-4">
         {stats.map((s) => (
           <div key={s.label} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
             <p className="text-2xl font-semibold text-primary">{s.value}</p>
@@ -73,41 +82,49 @@ function AdminPage() {
 
       <section className="px-4 pt-6">
         <h2 className="text-sm font-semibold">Teams / Departments</h2>
+        {isPending && (
+          <p className="mt-3 text-xs text-muted-foreground">Loading teams…</p>
+        )}
         <ul className="mt-3 space-y-2">
-          {teams.map((t) => {
-            const members = employees.filter((e) => e.team === t);
-            return (
-              <li
-                key={t}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-info/12 text-info">
-                  <Users2 className="h-5 w-5" />
+          {teams.map((t) => (
+            <li
+              key={t.team}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-info/12 text-info">
+                <Users2 className="h-5 w-5" />
+              </span>
+              <span className="flex-1">
+                <span className="block text-sm font-semibold">{t.team}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {t.members} members · {t.online} online
                 </span>
-                <span className="flex-1">
-                  <span className="block text-sm font-semibold">{t}</span>
-                  <span className="block text-xs text-muted-foreground">
-                    {members.length} members · {members.filter((m) => m.online).length} online
-                  </span>
-                </span>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              </li>
-            );
-          })}
+              </span>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </li>
+          ))}
         </ul>
       </section>
 
       <section className="px-4 pb-4 pt-6">
         <h2 className="text-sm font-semibold">Today&apos;s attendance</h2>
+        {!isPending && attendance.length === 0 && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            No one has checked in today yet.
+          </p>
+        )}
         <ul className="mt-3 divide-y divide-border">
-          {employees.map((e) => (
-            <li key={e.id} className="flex items-center gap-3 py-3">
-              <Avatar initials={e.initials} src={e.photo} alt={e.name} size={36} online={e.online} />
-              <span className="flex-1 text-sm font-medium">{e.name}</span>
-              <span
-                className={`text-xs ${e.online ? "text-primary" : "text-muted-foreground"}`}
-              >
-                {e.online ? "On duty" : e.updated}
+          {attendance.map((r) => (
+            <li key={r.id} className="flex items-center gap-3 py-3">
+              <Avatar
+                initials={r.initials}
+                src={r.photoUrl ?? undefined}
+                alt={r.name}
+                size={36}
+              />
+              <span className="flex-1 text-sm font-medium">{r.name}</span>
+              <span className="text-xs text-muted-foreground">
+                {r.checkOut === "—" ? "On duty" : fmtClock(r.checkOut)}
               </span>
             </li>
           ))}
