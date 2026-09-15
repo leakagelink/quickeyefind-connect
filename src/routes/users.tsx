@@ -86,6 +86,23 @@ function UsersPage() {
           ))}
         </div>
 
+        <p className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+          <MapPin className="h-3.5 w-3.5 text-primary" /> Location
+        </p>
+        <div className="hide-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
+          {areas.map((a) => (
+            <Button
+              variant={area === a ? "default" : "outline"}
+              size="sm"
+              key={a}
+              onClick={() => setArea(a)}
+              className="shrink-0 rounded-full"
+            >
+              {a}
+            </Button>
+          ))}
+        </div>
+
         <p className="mt-4 text-xs font-medium text-primary">
           {list.filter((e) => e.online).length} Online
         </p>
