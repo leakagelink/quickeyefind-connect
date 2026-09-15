@@ -50,12 +50,14 @@ export function useLiveLocation(opts?: {
       if (now - lastSentRef.current < intervalMs) return;
       lastSentRef.current = now;
       void sendLocation({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-        accuracy: pos.coords.accuracy ?? null,
-        speed: pos.coords.speed ?? null,
-        heading: pos.coords.heading ?? null,
-        battery: null,
+        data: {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: pos.coords.accuracy ?? null,
+          speed: pos.coords.speed ?? null,
+          heading: pos.coords.heading ?? null,
+          battery: null,
+        },
       }).catch(() => {});
     };
 

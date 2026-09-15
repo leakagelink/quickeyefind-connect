@@ -10,7 +10,7 @@ export function Avatar({
   size?: number;
   online?: boolean;
   ring?: boolean;
-  src?: string;
+  src?: string | undefined;
   alt?: string;
 }) {
   return (

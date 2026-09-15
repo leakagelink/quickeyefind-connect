@@ -50,7 +50,7 @@ function Splash() {
             Login / Register
           </Link>
           <Link
-            to="/permission"
+            to="/auth"
             className="flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-card text-sm font-medium text-foreground"
           >
             <UserRound className="h-4 w-4" /> Continue as Guest

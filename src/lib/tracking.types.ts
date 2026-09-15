@@ -72,6 +72,7 @@ export type AttendanceRow = {
   checkOut: string;
   hours: number;
   distanceKm: number;
+  visits: number;
   status: string;
 };
 
