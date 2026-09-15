@@ -7,6 +7,7 @@ import { AppLogo } from "@/components/AppLogo";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/auth")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Sign in — Quike Eye" },
