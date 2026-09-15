@@ -16,7 +16,7 @@ export default defineConfig({
     pages: [
       { path: "/" },
       { path: "/role" },
-      { path: "/login" },
+      { path: "/auth" },
       { path: "/permission" },
       { path: "/map" },
       { path: "/users" },
