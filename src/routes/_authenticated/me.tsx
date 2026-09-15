@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { employees, history, myProfile } from "@/lib/mock-data";
 
-export const Route = createFileRoute("/me")({
+export const Route = createFileRoute("/_authenticated/me")({
   head: () => ({
     meta: [
       { title: "My Panel — Attendance & Live Sharing | Quike Eye" },

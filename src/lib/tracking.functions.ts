@@ -302,11 +302,10 @@ export const setSharing = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const sb = context.supabase;
     const userId = context.userId;
-    await sb.from("employee_locations").upsert({
-      user_id: userId,
-      is_sharing: data.isSharing,
-      updated_at: new Date().toISOString(),
-    });
+    await sb
+      .from("employee_locations")
+      .update({ is_sharing: data.isSharing, updated_at: new Date().toISOString() })
+      .eq("user_id", userId);
     return { ok: true };
   });
 
@@ -465,9 +464,9 @@ export const getReports = createServerFn({ method: "GET" })
     const today = new Date().toISOString().slice(0, 10);
     const [{ data: profiles }, { data: roles }, { data: locs }, { data: attendance }] =
       await Promise.all([
-        sb.from("profiles").select("id,name,phone,team,photo_url"),
+        sb.from("profiles").select("id,name,phone,area,team,employee_code,photo_url"),
         sb.from("user_roles").select("user_id,role"),
-        sb.from("employee_locations").select("user_id,is_sharing,updated_at"),
+        sb.from("employee_locations").select("user_id,lat,lng,accuracy,battery,is_sharing,updated_at"),
         sb
           .from("attendance")
           .select("id,user_id,check_in,check_out,hours,distance_km,visits,status")
@@ -505,6 +504,7 @@ export const getReports = createServerFn({ method: "GET" })
           checkOut: a.check_out ?? "—",
           hours: a.hours ?? 0,
           distanceKm: a.distance_km ?? 0,
+          visits: a.visits ?? 0,
           status: a.status ?? "Present",
         };
       },
@@ -522,7 +522,7 @@ export const getReports = createServerFn({ method: "GET" })
         (m) => isOnline(locMap.get(m.id)?.updated_at ?? null, locMap.get(m.id)?.is_sharing ?? true),
       ).length;
       const teamRows = attendanceRows.filter((r) => r.team === team);
-      const visits = teamRows.reduce((s, r) => s + (r.visits ?? 0), 0);
+      const visits = teamRows.reduce((s, r) => s + r.visits, 0);
       const dist = teamRows.reduce((s, r) => s + r.distanceKm, 0);
       const present = teamRows.length;
       const onTime = present
@@ -570,8 +570,8 @@ export const getAdminOverview = createServerFn({ method: "GET" })
 
     const [{ data: profiles }, { data: locs }, { data: attendance }] =
       await Promise.all([
-        sb.from("profiles").select("id,name,phone,team,photo_url"),
-        sb.from("employee_locations").select("user_id,is_sharing,updated_at"),
+        sb.from("profiles").select("id,name,phone,area,team,employee_code,photo_url"),
+        sb.from("employee_locations").select("user_id,lat,lng,accuracy,battery,is_sharing,updated_at"),
         sb
           .from("attendance")
           .select("id,user_id,check_in,check_out,hours,distance_km,visits,status")
@@ -628,6 +628,7 @@ export const getAdminOverview = createServerFn({ method: "GET" })
           checkOut: a.check_out ?? "—",
           hours: a.hours ?? 0,
           distanceKm: a.distance_km ?? 0,
+          visits: a.visits ?? 0,
           status: a.status ?? "Present",
         };
       },

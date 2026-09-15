@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { TrackedPerson } from "@/lib/tracking.types";
 
-const BROWSER_KEY = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY as
+const BROWSER_KEY = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] as
   | string
   | undefined;
-const TRACKING_ID = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID as
+const TRACKING_ID = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID"] as
   | string
   | undefined;
 
@@ -12,22 +12,27 @@ const TRACKING_ID = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_
 const DEFAULT_CENTER = { lat: 28.6139, lng: 77.209 };
 const DEFAULT_ZOOM = 12;
 
-let loaderPromise: Promise<typeof google> | null = null;
+type GMaps = any;
+type GMap = any;
+type GMarker = any;
 
-function loadMapsApi(): Promise<typeof google> {
+let loaderPromise: Promise<GMaps> | null = null;
+
+function loadMapsApi(): Promise<GMaps> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("window unavailable"));
   }
-  if ((window as any).google?.maps) {
-    return Promise.resolve((window as any).google);
+  const w = window as any;
+  if (w.google?.maps) {
+    return Promise.resolve(w.google);
   }
   if (loaderPromise) return loaderPromise;
 
-  loaderPromise = new Promise<typeof google>((resolve, reject) => {
+  loaderPromise = new Promise<GMaps>((resolve, reject) => {
     const cb = "__qe_maps_init__" + Date.now();
-    (window as any)[cb] = () => {
-      delete (window as any)[cb];
-      if ((window as any).google?.maps) resolve((window as any).google);
+    w[cb] = () => {
+      delete w[cb];
+      if (w.google?.maps) resolve(w.google);
       else reject(new Error("Maps API failed to load"));
     };
     const src =
@@ -44,7 +49,7 @@ function loadMapsApi(): Promise<typeof google> {
   return loaderPromise;
 }
 
-function markerIcon(person: TrackedPerson): google.maps.Icon {
+function markerIcon(g: GMaps, person: TrackedPerson): any {
   const online = person.online;
   const fill = online ? "%230E7C66" : "%2364748B";
   const svg =
@@ -55,8 +60,8 @@ function markerIcon(person: TrackedPerson): google.maps.Icon {
     `</svg>`;
   return {
     url: "data:image/svg+xml;utf8," + encodeURIComponent(svg).replace(/%25/g, "%"),
-    scaledSize: new google.maps.Size(46, 56),
-    anchor: new google.maps.Point(23, 52),
+    scaledSize: new g.maps.Size(46, 56),
+    anchor: new g.maps.Point(23, 52),
   };
 }
 
@@ -68,14 +73,14 @@ export function GoogleMapView({
   controls = true,
 }: {
   people: TrackedPerson[];
-  selectedId?: string;
+  selectedId?: string | undefined;
   onSelect?: (p: TrackedPerson) => void;
   className?: string;
   controls?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<google.maps.Map | null>(null);
-  const markersRef = useRef<Map<string, google.maps.Marker>>(new Map());
+  const mapRef = useRef<GMap | null>(null);
+  const markersRef = useRef<Map<string, GMarker>>(new Map());
   const [ready, setReady] = useState(false);
 
   // Init map once.
@@ -121,7 +126,7 @@ export function GoogleMapView({
           map,
           position: { lat: p.lat, lng: p.lng },
           title: p.name,
-          icon: markerIcon(p),
+          icon: markerIcon(g, p),
         });
         if (onSelect) {
           g.maps.event.addListener(marker, "click", () => onSelect(p));
@@ -129,7 +134,7 @@ export function GoogleMapView({
         markersRef.current.set(p.id, marker);
       } else {
         marker.setPosition({ lat: p.lat, lng: p.lng });
-        marker.setIcon(markerIcon(p));
+        marker.setIcon(markerIcon(g, p));
       }
     }
     // Remove stale markers.

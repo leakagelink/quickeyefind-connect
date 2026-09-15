@@ -1,5 +1,18 @@
 # QuikEye
 
+## Real backend + real map + live GPS (done)
+- [x] Lovable Cloud database (profiles, roles, locations, history, attendance, alerts)
+- [x] Email + Google auth enabled
+- [x] Google Maps Platform connector linked (new workspace)
+- [x] Auth gate + /auth sign-in/sign-up page
+- [x] Server functions (tracking.functions.ts)
+- [x] Real Google Map in map/employee/me screens
+- [x] Live GPS hook (watchPosition → upsert every 30s)
+- [x] Rewire all screens to backend data
+- [x] Realtime location updates on map
+- [ ] Custom-domain Google Maps key (eye.socilet.in) — user supplies own key
+
+
 ## Redesign
 - [x] Emerald Pulse palette, Sora/Manrope typography, map-first direction
 - [x] Responsive mobile shell, navigation, motion system
@@ -18,4 +31,4 @@
 - [x] Manage teams / departments
 - [x] Search & filter employees
 - [x] Modern, responsive UI/UX with animations
-- [ ] Scalable & secure backend — needs Lovable Cloud (awaiting user go-ahead)
+- [x] Scalable & secure backend — Lovable Cloud enabled

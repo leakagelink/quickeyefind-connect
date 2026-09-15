@@ -6,7 +6,7 @@ import { PhoneShell } from "@/components/PhoneShell";
 import { Button } from "@/components/ui/button";
 import { attendanceToday, teamPerformance, weeklyAnalytics } from "@/lib/mock-data";
 
-export const Route = createFileRoute("/reports")({
+export const Route = createFileRoute("/_authenticated/reports")({
   head: () => ({
     meta: [
       { title: "Reports & Analytics — Attendance Insights | Quike Eye" },
