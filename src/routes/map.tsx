@@ -35,7 +35,9 @@ function MapPage() {
   const list = employees.filter(
     (e) =>
       e.name.toLowerCase().includes(query.toLowerCase()) ||
-      e.phone.replace(/\s/g, "").includes(query.replace(/\s/g, "")),
+      e.phone.replace(/\s/g, "").includes(query.replace(/\s/g, "")) ||
+      e.area.toLowerCase().includes(query.toLowerCase()) ||
+      e.team.toLowerCase().includes(query.toLowerCase()),
   );
   const online = employees.filter((e) => e.online);
 
@@ -106,7 +108,7 @@ function MapPage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search user by name or number"
+            placeholder="Search by name, number, location or team"
             className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </label>

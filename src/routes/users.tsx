@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Search, SlidersHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
@@ -28,9 +28,13 @@ export const Route = createFileRoute("/users")({
 
 const filters = ["All", "Online", "Offline", "Field Sales", "Delivery", "Service"];
 
+// Unique locations for the location filter chips
+const areas = ["All locations", ...Array.from(new Set(employees.map((e) => e.area)))];
+
 function UsersPage() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
+  const [area, setArea] = useState("All locations");
 
   const list = employees
     .filter((e) =>
@@ -42,7 +46,16 @@ function UsersPage() {
             ? !e.online
             : e.team === filter,
     )
-    .filter((e) => e.name.toLowerCase().includes(query.toLowerCase()));
+    .filter((e) => area === "All locations" || e.area === area)
+    .filter((e) => {
+      const q = query.toLowerCase();
+      return (
+        e.name.toLowerCase().includes(q) ||
+        e.phone.replace(/\s/g, "").includes(query.replace(/\s/g, "")) ||
+        e.area.toLowerCase().includes(q) ||
+        e.team.toLowerCase().includes(q)
+      );
+    });
 
   return (
     <PhoneShell>
@@ -54,7 +67,7 @@ function UsersPage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search user..."
+            placeholder="Search by name, number, location or team..."
             className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </label>
@@ -73,11 +86,33 @@ function UsersPage() {
           ))}
         </div>
 
+        <p className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+          <MapPin className="h-3.5 w-3.5 text-primary" /> Location
+        </p>
+        <div className="hide-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
+          {areas.map((a) => (
+            <Button
+              variant={area === a ? "default" : "outline"}
+              size="sm"
+              key={a}
+              onClick={() => setArea(a)}
+              className="shrink-0 rounded-full"
+            >
+              {a}
+            </Button>
+          ))}
+        </div>
+
         <p className="mt-4 text-xs font-medium text-primary">
           {list.filter((e) => e.online).length} Online
         </p>
       </div>
 
+      {list.length === 0 && (
+        <p className="mt-10 text-center text-sm text-muted-foreground">
+          No employee found — try a different name, location or filter.
+        </p>
+      )}
       <ul className="screen-enter mt-2 space-y-2 px-4">
         {list.map((e) => (
           <li key={e.id}>
