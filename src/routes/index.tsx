@@ -25,9 +25,13 @@ export const Route = createFileRoute("/")({
 function Splash() {
   return (
     <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-hidden bg-background sm:my-4 sm:min-h-[calc(100dvh-32px)] sm:rounded-[28px] sm:border sm:border-border sm:shadow-card">
-      <div className="absolute inset-0 opacity-45">
-        <LiveMap people={employees.slice(0, 5)} controls={false} className="h-full" />
-      </div>
+      <img
+        src={mapBg}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover opacity-45"
+        decoding="async"
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
 
       <div className="screen-enter relative z-10 mt-auto px-6 pb-10 text-center">
