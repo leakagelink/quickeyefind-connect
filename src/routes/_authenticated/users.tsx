@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, MapPin, Search, SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { ChevronRight, MapPin, Search, SlidersHorizontal } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
-import { employees } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PhoneShell";
+import { getOverview } from "@/lib/tracking.functions";
+import { timeAgo } from "@/lib/tracking.types";
 
 export const Route = createFileRoute("/_authenticated/users")({
   head: () => ({
@@ -26,15 +29,29 @@ export const Route = createFileRoute("/_authenticated/users")({
   component: UsersPage,
 });
 
-const filters = ["All", "Online", "Offline", "Field Sales", "Delivery", "Service"];
-
-// Unique locations for the location filter chips
-const areas = ["All locations", ...Array.from(new Set(employees.map((e) => e.area)))];
-
 function UsersPage() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
   const [area, setArea] = useState("All locations");
+
+  const fetchOverview = useServerFn(getOverview);
+  const { data, isPending } = useQuery({
+    queryKey: ["overview"],
+    queryFn: fetchOverview,
+    refetchInterval: 30_000,
+  });
+
+  const employees = data?.people ?? [];
+
+  const teams = useMemo(
+    () => Array.from(new Set(employees.map((e) => e.team))),
+    [employees],
+  );
+  const filters = ["All", "Online", "Offline", ...teams];
+  const areas = useMemo(
+    () => ["All locations", ...Array.from(new Set(employees.map((e) => e.area)))],
+    [employees],
+  );
 
   const list = employees
     .filter((e) =>
@@ -59,7 +76,15 @@ function UsersPage() {
 
   return (
     <PhoneShell>
-      <PageHeader title="Team" subtitle={`${employees.filter((e) => e.online).length} active right now`} action={<Button variant="outline" size="icon" aria-label="Filters"><SlidersHorizontal /></Button>} />
+      <PageHeader
+        title="Team"
+        subtitle={`${employees.filter((e) => e.online).length} active right now`}
+        action={
+          <Button variant="outline" size="icon" aria-label="Filters">
+            <SlidersHorizontal />
+          </Button>
+        }
+      />
 
       <div className="px-4 pt-4">
         <label className="flex h-12 items-center gap-2 rounded-2xl border border-input bg-card px-4 shadow-sm">
@@ -108,7 +133,10 @@ function UsersPage() {
         </p>
       </div>
 
-      {list.length === 0 && (
+      {isPending && (
+        <p className="mt-10 text-center text-sm text-muted-foreground">Loading team…</p>
+      )}
+      {!isPending && list.length === 0 && (
         <p className="mt-10 text-center text-sm text-muted-foreground">
           No employee found — try a different name, location or filter.
         </p>
@@ -121,7 +149,13 @@ function UsersPage() {
               params={{ id: e.id }}
               className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-sm"
             >
-              <Avatar initials={e.initials} src={e.photo} alt={e.name} size={44} online={e.online} />
+              <Avatar
+                initials={e.initials}
+                src={e.photoUrl ?? undefined}
+                alt={e.name}
+                size={44}
+                online={e.online}
+              />
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold">{e.name}</span>
                 <span className="block text-xs text-muted-foreground">{e.phone}</span>
@@ -132,7 +166,7 @@ function UsersPage() {
                   e.online ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                {e.online ? "Live" : e.updated}
+                {e.online ? "Live" : timeAgo(e.updatedAt)}
               </span>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </Link>
