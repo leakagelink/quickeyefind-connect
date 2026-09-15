@@ -12,12 +12,22 @@ import {
   Users,
 } from "lucide-react";
 import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
-import { LiveMap } from "@/components/LiveMap";
+import { GoogleMapView } from "@/components/GoogleMapView";
 import { PhoneShell } from "@/components/PhoneShell";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { employees, history, myProfile } from "@/lib/mock-data";
+import {
+  checkIn as checkInFn,
+  checkOut as checkOutFn,
+  getMyPanel,
+  getOverview,
+  setSharing,
+} from "@/lib/tracking.functions";
+import { fmtClock, timeAgo } from "@/lib/tracking.types";
+import { useLiveLocation } from "@/hooks/useLiveLocation";
 
 export const Route = createFileRoute("/_authenticated/me")({
   head: () => ({
@@ -41,21 +51,66 @@ export const Route = createFileRoute("/_authenticated/me")({
 });
 
 function MyPanelPage() {
-  const [share, setShare] = useState(true);
-  const [onDuty, setOnDuty] = useState(true);
   const [selectedMate, setSelectedMate] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+
+  const fetchMyPanel = useServerFn(getMyPanel);
+  const fetchOverview = useServerFn(getOverview);
+  const setSharingFn = useServerFn(setSharing);
+  const doCheckIn = useServerFn(checkInFn);
+  const doCheckOut = useServerFn(checkOutFn);
+
+  const { data: panel } = useQuery({
+    queryKey: ["myPanel"],
+    queryFn: fetchMyPanel,
+    refetchInterval: 60_000,
+  });
+  const { data: overview } = useQuery({
+    queryKey: ["overview"],
+    queryFn: fetchOverview,
+    refetchInterval: 30_000,
+  });
+
+  const share = panel?.sharing ?? true;
+  const today = panel?.today ?? null;
+  const onDuty = Boolean(today?.checkIn && !today?.checkOut);
+
+  useLiveLocation({ sharing: share });
+
+  const shareMutation = useMutation({
+    mutationFn: (isSharing: boolean) => setSharingFn({ data: { isSharing } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myPanel"] });
+      queryClient.invalidateQueries({ queryKey: ["overview"] });
+    },
+  });
+
+  const dutyMutation = useMutation({
+    mutationFn: () => (onDuty ? doCheckOut({ data: {} }) : doCheckIn({ data: {} })),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myPanel"] });
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
+      queryClient.invalidateQueries({ queryKey: ["admin"] });
+    },
+  });
+
+  const profile = panel?.profile;
+  const myTeam = profile?.team ?? "";
+  const mates = (overview?.people ?? []).filter(
+    (p) => p.team === myTeam && p.id !== profile?.id,
+  );
 
   const stats = [
-    { icon: Clock, label: "Hours today", value: `${myProfile.hoursToday}h` },
-    { icon: RouteIcon, label: "Distance", value: `${myProfile.distanceToday} km` },
-    { icon: Briefcase, label: "Visits", value: myProfile.visitsToday },
-    { icon: LogIn, label: "Check-in", value: myProfile.checkIn },
+    { icon: Clock, label: "Hours today", value: `${today?.hours ?? 0}h` },
+    { icon: RouteIcon, label: "Distance", value: `${today?.distanceKm ?? 0} km` },
+    { icon: Briefcase, label: "Visits", value: today?.visits ?? 0 },
+    { icon: LogIn, label: "Check-in", value: fmtClock(today?.checkIn ?? null) },
   ];
 
   const monthly = [
-    { label: "Present", value: myProfile.monthPresent, tone: "text-primary" },
-    { label: "Late", value: myProfile.monthLate, tone: "text-gold" },
-    { label: "Absent", value: myProfile.monthAbsent, tone: "text-destructive" },
+    { label: "Present", value: panel?.month.present ?? 0, tone: "text-primary" },
+    { label: "Late", value: panel?.month.late ?? 0, tone: "text-gold" },
+    { label: "Absent", value: panel?.month.absent ?? 0, tone: "text-destructive" },
   ];
 
   return (
@@ -72,14 +127,22 @@ function MyPanelPage() {
         </div>
 
         <div className="screen-enter mt-5 flex items-center gap-3">
-          <Avatar initials={myProfile.initials} size={58} online={onDuty} />
+          <Avatar
+            initials={profile?.initials ?? "…"}
+            src={profile?.photoUrl ?? undefined}
+            alt={profile?.name ?? "Me"}
+            size={58}
+            online={onDuty}
+          />
           <div className="min-w-0">
-            <p className="truncate text-base font-bold text-primary-foreground">{myProfile.name}</p>
+            <p className="truncate text-base font-bold text-primary-foreground">
+              {profile?.name ?? "Loading…"}
+            </p>
             <p className="truncate text-xs text-primary-foreground/75">
-              {myProfile.code} · {myProfile.team}
+              {profile?.employeeCode ?? "—"} · {profile?.team ?? "—"}
             </p>
             <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-primary-foreground/75">
-              <MapPin className="h-3 w-3" /> {myProfile.area}
+              <MapPin className="h-3 w-3" /> {profile?.area ?? "—"}
             </p>
           </div>
         </div>
@@ -92,7 +155,7 @@ function MyPanelPage() {
             <span className="flex-1 text-sm font-semibold">Share my live location</span>
             <Switch
               checked={share}
-              onCheckedChange={setShare}
+              onCheckedChange={(v) => shareMutation.mutate(v)}
               aria-label="Toggle live location sharing"
             />
           </div>
@@ -104,7 +167,8 @@ function MyPanelPage() {
           <Button
             className="mt-4 w-full"
             variant={onDuty ? "outline" : "default"}
-            onClick={() => setOnDuty((v) => !v)}
+            disabled={dutyMutation.isPending}
+            onClick={() => dutyMutation.mutate()}
           >
             {onDuty ? "Check out for the day" : "Check in now"}
           </Button>
@@ -126,37 +190,50 @@ function MyPanelPage() {
           {share ? (
             <>
               <div className="screen-enter mt-3 overflow-hidden rounded-2xl border border-border shadow-card">
-                <LiveMap
-                  people={employees.filter((e) => e.team === myProfile.team)}
+                <GoogleMapView
+                  people={mates}
                   className="h-44"
                   controls={false}
                   onSelect={(e) => setSelectedMate(e.id)}
-                  selectedId={selectedMate}
+                  selectedId={selectedMate ?? undefined}
                 />
               </div>
+              {mates.length === 0 && (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  No other team member is sharing their location right now.
+                </p>
+              )}
               <ul className="mt-3 space-y-2">
-                {employees
-                  .filter((e) => e.team === myProfile.team)
-                  .map((e) => (
-                    <li key={e.id}>
-                      <Link
-                        to="/employee/$id"
-                        params={{ id: e.id }}
-                        className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-3"
+                {mates.map((e) => (
+                  <li key={e.id}>
+                    <Link
+                      to="/employee/$id"
+                      params={{ id: e.id }}
+                      className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-3"
+                    >
+                      <Avatar
+                        initials={e.initials}
+                        src={e.photoUrl ?? undefined}
+                        alt={e.name}
+                        size={40}
+                        online={e.online}
+                      />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-semibold text-foreground">
+                          {e.name}
+                        </span>
+                        <span className="flex items-center gap-1 truncate text-xs text-muted-foreground">
+                          <MapPin className="h-3 w-3" /> {e.area}
+                        </span>
+                      </span>
+                      <span
+                        className={`text-[11px] font-medium ${e.online ? "text-primary" : "text-muted-foreground"}`}
                       >
-                        <Avatar initials={e.initials} src={e.photo} alt={e.name} size={40} online={e.online} />
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-semibold text-foreground">{e.name}</span>
-                          <span className="flex items-center gap-1 truncate text-xs text-muted-foreground">
-                            <MapPin className="h-3 w-3" /> {e.area}
-                          </span>
-                        </span>
-                        <span className={`text-[11px] font-medium ${e.online ? "text-primary" : "text-muted-foreground"}`}>
-                          {e.updated}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
+                        {timeAgo(e.updatedAt)}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </>
           ) : (
@@ -197,17 +274,26 @@ function MyPanelPage() {
 
         <section className="mt-6">
           <h2 className="text-sm font-semibold">My movement today</h2>
+          {(panel?.history ?? []).length === 0 && (
+            <p className="mt-3 text-xs text-muted-foreground">
+              No movement recorded yet — keep the app open while you are on duty.
+            </p>
+          )}
           <ul className="mt-3 space-y-3">
-            {history.map((h) => (
-              <li key={h.time} className="flex gap-3">
+            {(panel?.history ?? []).map((h) => (
+              <li key={h.id} className="flex gap-3">
                 <span className="mt-1 flex flex-col items-center">
                   <span className="h-2.5 w-2.5 rounded-full bg-primary" />
                   <span className="mt-1 w-px flex-1 bg-border" />
                 </span>
                 <span className="flex-1 rounded-2xl border border-border bg-card p-3">
-                  <span className="block text-xs font-semibold text-primary">{h.time}</span>
-                  <span className="mt-0.5 block text-sm font-medium text-foreground">{h.place}</span>
-                  <span className="block text-xs text-muted-foreground">{h.note}</span>
+                  <span className="block text-xs font-semibold text-primary">
+                    {fmtClock(h.recordedAt)}
+                  </span>
+                  <span className="mt-0.5 block text-sm font-medium text-foreground">
+                    {h.lat.toFixed(5)}, {h.lng.toFixed(5)}
+                  </span>
+                  <span className="block text-xs text-muted-foreground">{h.label ?? "Location update"}</span>
                 </span>
               </li>
             ))}
