@@ -1,19 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ChevronLeft,
+  ChevronRight,
   Clock,
+  EyeOff,
   LogIn,
   MapPin,
   Route as RouteIcon,
   ShieldCheck,
   Briefcase,
+  Users,
 } from "lucide-react";
 import { useState } from "react";
 import { Avatar } from "@/components/Avatar";
+import { LiveMap } from "@/components/LiveMap";
 import { PhoneShell } from "@/components/PhoneShell";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { history, myProfile } from "@/lib/mock-data";
+import { employees, history, myProfile } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/me")({
   head: () => ({
