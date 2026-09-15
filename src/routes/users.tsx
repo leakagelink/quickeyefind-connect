@@ -67,7 +67,7 @@ function UsersPage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search user..."
+            placeholder="Search by name, number, location or team..."
             className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </label>
