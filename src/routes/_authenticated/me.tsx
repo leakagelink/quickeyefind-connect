@@ -86,7 +86,7 @@ function MyPanelPage() {
   });
 
   const dutyMutation = useMutation({
-    mutationFn: () => (onDuty ? doCheckOut({ data: {} }) : doCheckIn({ data: {} })),
+    mutationFn: () => (onDuty ? doCheckOut() : doCheckIn()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myPanel"] });
       queryClient.invalidateQueries({ queryKey: ["reports"] });
