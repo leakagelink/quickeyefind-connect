@@ -45,23 +45,28 @@ function EmployeePage() {
   const person = data?.person;
 
   return (
-    <PhoneShell nav={false}>
-      <header className="flex items-center gap-3 px-4 pt-5">
-        <Link to="/users" className="text-muted-foreground">
-          <ChevronLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="flex-1 text-center text-base font-semibold">
-          {person?.name ?? "Employee"}
-        </h1>
-        <span className="w-5" />
-      </header>
+    <PhoneShell
+      nav={false}
+      title={person?.name ?? "Employee"}
+      mobileHeader={
+        <header className="flex items-center gap-3 px-4 pt-5">
+          <Link to="/users" className="text-muted-foreground">
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="flex-1 text-center text-base font-semibold">
+            {person?.name ?? "Employee"}
+          </h1>
+          <span className="w-5" />
+        </header>
+      }
+    >
 
       <div className="mt-4">
         <GoogleMapView
           people={person ? [person] : []}
           selectedId={person?.id}
           controls={false}
-          className="h-64"
+          className="h-64 lg:h-96 lg:rounded-2xl"
         />
       </div>
 
@@ -70,7 +75,7 @@ function EmployeePage() {
       )}
 
       {person && (
-        <section className="px-4 py-4">
+        <section className="px-4 py-4 lg:px-0">
           <div className="screen-enter flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card">
             <Avatar initials={person.initials} src={person.photoUrl ?? undefined} alt={person.name} size={46} online={person.online} />
             <div className="flex-1">
