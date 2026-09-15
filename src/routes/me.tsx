@@ -43,6 +43,7 @@ export const Route = createFileRoute("/me")({
 function MyPanelPage() {
   const [share, setShare] = useState(true);
   const [onDuty, setOnDuty] = useState(true);
+  const [selectedMate, setSelectedMate] = useState<string | null>(null);
 
   const stats = [
     { icon: Clock, label: "Hours today", value: `${myProfile.hoursToday}h` },
