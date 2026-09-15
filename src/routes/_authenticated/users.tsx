@@ -7,7 +7,7 @@ import { employees } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/PhoneShell";
 
-export const Route = createFileRoute("/users")({
+export const Route = createFileRoute("/_authenticated/users")({
   head: () => ({
     meta: [
       { title: "Online Users — Quike Eye" },

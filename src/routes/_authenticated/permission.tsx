@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { MapPin, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/permission")({
+export const Route = createFileRoute("/_authenticated/permission")({
   head: () => ({
     meta: [
       { title: "Location Permission — Quike Eye" },

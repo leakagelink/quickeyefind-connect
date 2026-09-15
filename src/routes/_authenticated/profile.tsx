@@ -17,7 +17,7 @@ import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
 import { Switch } from "@/components/ui/switch";
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
       { title: "Profile & Settings — Quike Eye" },
