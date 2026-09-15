@@ -43,6 +43,7 @@ export const Route = createFileRoute("/me")({
 function MyPanelPage() {
   const [share, setShare] = useState(true);
   const [onDuty, setOnDuty] = useState(true);
+  const [selectedMate, setSelectedMate] = useState<string | null>(null);
 
   const stats = [
     { icon: Clock, label: "Hours today", value: `${myProfile.hoursToday}h` },
@@ -97,8 +98,8 @@ function MyPanelPage() {
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
             {share
-              ? "Your admin can see your live location while you are on duty."
-              : "Sharing is off — your location is not visible to anyone."}
+              ? "Your admin and team members can see your live location while you are on duty."
+              : "Sharing is off — your location is hidden from admin and team."}
           </p>
           <Button
             className="mt-4 w-full"
@@ -108,6 +109,66 @@ function MyPanelPage() {
             {onDuty ? "Check out for the day" : "Check in now"}
           </Button>
         </div>
+
+        <section className="mt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="flex items-center gap-1.5 text-sm font-semibold">
+              <Users className="h-4 w-4 text-primary" /> My team — live
+            </h2>
+            <Link
+              to="/map"
+              className="flex items-center gap-0.5 text-xs font-semibold text-primary"
+            >
+              Full map <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          {share ? (
+            <>
+              <div className="screen-enter mt-3 overflow-hidden rounded-2xl border border-border shadow-card">
+                <LiveMap
+                  people={employees.filter((e) => e.team === myProfile.team)}
+                  className="h-44"
+                  controls={false}
+                  onSelect={(e) => setSelectedMate(e.id)}
+                  selectedId={selectedMate}
+                />
+              </div>
+              <ul className="mt-3 space-y-2">
+                {employees
+                  .filter((e) => e.team === myProfile.team)
+                  .map((e) => (
+                    <li key={e.id}>
+                      <Link
+                        to="/employee/$id"
+                        params={{ id: e.id }}
+                        className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-3"
+                      >
+                        <Avatar initials={e.initials} src={e.photo} alt={e.name} size={40} online={e.online} />
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold text-foreground">{e.name}</span>
+                          <span className="flex items-center gap-1 truncate text-xs text-muted-foreground">
+                            <MapPin className="h-3 w-3" /> {e.area}
+                          </span>
+                        </span>
+                        <span className={`text-[11px] font-medium ${e.online ? "text-primary" : "text-muted-foreground"}`}>
+                          {e.updated}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </>
+          ) : (
+            <div className="mt-3 flex items-start gap-3 rounded-2xl border border-dashed border-border bg-muted/50 p-4">
+              <EyeOff className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+              <p className="text-xs text-muted-foreground">
+                Location sharing is off. Turn on "Share my live location" to see your team members
+                live and let them see you.
+              </p>
+            </div>
+          )}
+        </section>
 
         <div className="mt-4 grid grid-cols-2 gap-3">
           {stats.map(({ icon: Icon, label, value }) => (
