@@ -14,16 +14,210 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          message: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string
+          message: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          message?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      attendance: {
+        Row: {
+          check_in: string | null
+          check_out: string | null
+          created_at: string
+          distance_km: number
+          hours: number
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+          visits: number
+          work_date: string
+        }
+        Insert: {
+          check_in?: string | null
+          check_out?: string | null
+          created_at?: string
+          distance_km?: number
+          hours?: number
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          visits?: number
+          work_date?: string
+        }
+        Update: {
+          check_in?: string | null
+          check_out?: string | null
+          created_at?: string
+          distance_km?: number
+          hours?: number
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          visits?: number
+          work_date?: string
+        }
+        Relationships: []
+      }
+      employee_locations: {
+        Row: {
+          accuracy: number | null
+          battery: number | null
+          heading: number | null
+          is_sharing: boolean
+          lat: number
+          lng: number
+          speed: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          battery?: number | null
+          heading?: number | null
+          is_sharing?: boolean
+          lat: number
+          lng: number
+          speed?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          battery?: number | null
+          heading?: number | null
+          is_sharing?: boolean
+          lat?: number
+          lng?: number
+          speed?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      location_history: {
+        Row: {
+          id: string
+          label: string | null
+          lat: number
+          lng: number
+          recorded_at: string
+          speed: number | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          label?: string | null
+          lat: number
+          lng: number
+          recorded_at?: string
+          speed?: number | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          label?: string | null
+          lat?: number
+          lng?: number
+          recorded_at?: string
+          speed?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          area: string | null
+          created_at: string
+          employee_code: string | null
+          id: string
+          name: string
+          phone: string | null
+          photo_url: string | null
+          team: string | null
+          updated_at: string
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          employee_code?: string | null
+          id: string
+          name?: string
+          phone?: string | null
+          photo_url?: string | null
+          team?: string | null
+          updated_at?: string
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          employee_code?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          photo_url?: string | null
+          team?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "employee" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +344,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "employee", "user"],
+    },
   },
 } as const
