@@ -55,7 +55,7 @@ function AlertsPage() {
           </Button>
         }
       />
-      <div className="mx-4 flex items-center gap-3 rounded-2xl bg-navy p-4 text-primary-foreground shadow-card">
+      <div className="mx-4 flex items-center gap-3 rounded-2xl bg-navy p-4 lg:mx-0 text-primary-foreground shadow-card">
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-foreground/10">
           <BellRing className="h-5 w-5" />
         </span>
@@ -72,9 +72,9 @@ function AlertsPage() {
       )}
 
       {groups.map((group) => (
-        <section key={group.label} className="mt-5 px-4">
+        <section key={group.label} className="mt-5 px-4 lg:px-0">
           <p className="text-xs font-medium text-muted-foreground">{group.label}</p>
-          <ul className="screen-enter mt-2 space-y-2">
+          <ul className="screen-enter mt-2 space-y-2 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
             {group.items.map((a) => (
               <li
                 key={a.id}
