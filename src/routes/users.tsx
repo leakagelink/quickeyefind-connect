@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Search, SlidersHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
