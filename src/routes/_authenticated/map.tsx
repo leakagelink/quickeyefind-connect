@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import logo from "@/assets/quikeye-logo.png.asset.json";
+import { AppLogo } from "@/components/AppLogo";
 import { Avatar } from "@/components/Avatar";
 import { GoogleMapView } from "@/components/GoogleMapView";
 import { PhoneShell } from "@/components/PhoneShell";
@@ -109,13 +109,7 @@ function MapPage() {
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <img
-            src={logo.url}
-            alt="Quike Eye"
-            className="h-10 w-auto drop-shadow-sm"
-            width={200}
-            height={80}
-          />
+          <AppLogo alt="Quike Eye" className="h-10 w-auto drop-shadow-sm" width={200} height={80} priority />
           <Link
             to="/alerts"
             aria-label="Alerts"
@@ -140,7 +134,7 @@ function MapPage() {
             />
             <aside className="screen-enter absolute inset-y-0 left-0 flex w-[78%] max-w-xs flex-col bg-card px-4 pb-6 pt-[max(env(safe-area-inset-top),1rem)] shadow-card">
               <div className="flex items-center justify-between border-b border-border pb-4">
-                <img src={logo.url} alt="Quike Eye" className="h-11 w-auto" width={200} height={80} />
+                <AppLogo alt="Quike Eye" className="h-11 w-auto" width={200} height={80} />
                 <Button variant="ghost" size="icon" aria-label="Close menu" onClick={() => setMenuOpen(false)}>
                   <X className="h-5 w-5" />
                 </Button>

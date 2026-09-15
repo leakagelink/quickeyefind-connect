@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
+import { LogoManager } from "@/components/LogoManager";
 import { getAdminOverview } from "@/lib/tracking.functions";
 import { fmtClock } from "@/lib/tracking.types";
 
@@ -52,6 +53,10 @@ function AdminPage() {
         <h1 className="flex-1 text-center text-base font-semibold">Admin Panel</h1>
         <span className="w-5" />
       </header>
+
+      <div className="px-4">
+        <LogoManager />
+      </div>
 
       <div className="px-4 pt-4">
         <Link

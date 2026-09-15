@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { UserRound } from "lucide-react";
-import logo from "@/assets/quikeye-logo.png.asset.json";
+import { AppLogo } from "@/components/AppLogo";
 import mapBg from "@/assets/map-bg.jpg";
 
 export const Route = createFileRoute("/")({
@@ -35,13 +35,7 @@ function Splash() {
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
 
       <div className="screen-enter relative z-10 mt-auto px-6 pb-10 text-center">
-        <img
-          src={logo.url}
-          alt="Quike Eye logo"
-          className="mx-auto w-56"
-          width={512}
-          height={512}
-        />
+        <AppLogo className="mx-auto w-56" width={512} height={512} priority />
         <h1 className="mt-2 text-xl font-semibold text-foreground">Quike Eye</h1>
         <p className="mt-1 text-sm text-muted-foreground">Find · Connect · Complete</p>
 
