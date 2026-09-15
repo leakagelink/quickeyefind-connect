@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ChevronLeft, Loader2, LogIn, UserPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import logo from "@/assets/quikeye-logo.png.asset.json";
+import { AppLogo } from "@/components/AppLogo";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/auth")({
@@ -98,7 +98,7 @@ function AuthPage() {
       </Link>
 
       <div className="screen-enter mt-4 text-center">
-        <img src={logo.url} alt="Quike Eye logo" className="mx-auto w-20" width={512} height={512} />
+        <AppLogo className="mx-auto w-20" width={512} height={512} />
         <h1 className="mt-3 text-xl font-semibold">
           {mode === "signin" ? "Welcome back" : "Create your account"}
         </h1>

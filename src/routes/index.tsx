@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { UserRound } from "lucide-react";
-import logo from "@/assets/quikeye-logo.png.asset.json";
+import { AppLogo } from "@/components/AppLogo";
 import mapBg from "@/assets/map-bg.jpg";
 
 export const Route = createFileRoute("/")({
