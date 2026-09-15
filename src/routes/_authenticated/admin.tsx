@@ -53,6 +53,10 @@ function AdminPage() {
         <span className="w-5" />
       </header>
 
+      <div className="px-4">
+        <LogoManager />
+      </div>
+
       <div className="px-4 pt-4">
         <Link
           to="/reports"
