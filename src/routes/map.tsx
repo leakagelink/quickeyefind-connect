@@ -35,7 +35,9 @@ function MapPage() {
   const list = employees.filter(
     (e) =>
       e.name.toLowerCase().includes(query.toLowerCase()) ||
-      e.phone.replace(/\s/g, "").includes(query.replace(/\s/g, "")),
+      e.phone.replace(/\s/g, "").includes(query.replace(/\s/g, "")) ||
+      e.area.toLowerCase().includes(query.toLowerCase()) ||
+      e.team.toLowerCase().includes(query.toLowerCase()),
   );
   const online = employees.filter((e) => e.online);
 
