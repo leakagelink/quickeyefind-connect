@@ -12,7 +12,7 @@ import {
   X,
   ShieldCheck,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import logo from "@/assets/quikeye-logo.png.asset.json";
@@ -58,7 +58,7 @@ function MapPage() {
   });
 
   // Live updates when anyone's location changes.
-  useMemo(() => {
+  useEffect(() => {
     const channel = supabase
       .channel("employee_locations_live")
       .on(
