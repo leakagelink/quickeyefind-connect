@@ -108,6 +108,11 @@ function UsersPage() {
         </p>
       </div>
 
+      {list.length === 0 && (
+        <p className="mt-10 text-center text-sm text-muted-foreground">
+          No employee found — try a different name, location or filter.
+        </p>
+      )}
       <ul className="screen-enter mt-2 space-y-2 px-4">
         {list.map((e) => (
           <li key={e.id}>
