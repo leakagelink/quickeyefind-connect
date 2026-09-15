@@ -3,8 +3,8 @@ import { BarChart3, ChevronLeft, ChevronRight, Users2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
-import { PhoneShell } from "@/components/PhoneShell";
 import { LogoManager } from "@/components/LogoManager";
+import { DashboardShell } from "@/components/DashboardShell";
 import { getAdminOverview } from "@/lib/tracking.functions";
 import { fmtClock } from "@/lib/tracking.types";
 
@@ -45,20 +45,24 @@ function AdminPage() {
   const attendance = data?.attendance ?? [];
 
   return (
-    <PhoneShell nav={false}>
-      <header className="flex items-center gap-3 px-4 pt-5">
-        <Link to="/profile" className="text-muted-foreground">
-          <ChevronLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="flex-1 text-center text-base font-semibold">Admin Panel</h1>
-        <span className="w-5" />
-      </header>
+    <DashboardShell
+      title="Admin Panel"
+      mobileHeader={
+        <header className="flex items-center gap-3 px-4 pt-5">
+          <Link to="/profile" className="text-muted-foreground">
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="flex-1 text-center text-base font-semibold">Admin Panel</h1>
+          <span className="w-5" />
+        </header>
+      }
+    >
 
-      <div className="px-4">
+      <div className="px-4 lg:max-w-2xl lg:px-0">
         <LogoManager />
       </div>
 
-      <div className="px-4 pt-4">
+      <div className="px-4 pt-4 lg:max-w-2xl lg:px-0">
         <Link
           to="/reports"
           className="tap-feedback flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm"
@@ -76,7 +80,7 @@ function AdminPage() {
         </Link>
       </div>
 
-      <div className="screen-enter grid grid-cols-2 gap-3 px-4 pt-4">
+      <div className="screen-enter grid grid-cols-2 gap-3 px-4 pt-4 lg:grid-cols-4 lg:gap-5 lg:px-0 lg:pt-6">
         {stats.map((s) => (
           <div key={s.label} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
             <p className="text-2xl font-semibold text-primary">{s.value}</p>
@@ -85,12 +89,12 @@ function AdminPage() {
         ))}
       </div>
 
-      <section className="px-4 pt-6">
-        <h2 className="text-sm font-semibold">Teams / Departments</h2>
+      <section className="px-4 pt-6 lg:px-0 lg:pt-8">
+        <h2 className="text-sm font-semibold lg:text-base">Teams / Departments</h2>
         {isPending && (
           <p className="mt-3 text-xs text-muted-foreground">Loading teams…</p>
         )}
-        <ul className="mt-3 space-y-2">
+        <ul className="mt-3 space-y-2 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0 xl:grid-cols-3">
           {teams.map((t) => (
             <li
               key={t.team}
@@ -111,14 +115,14 @@ function AdminPage() {
         </ul>
       </section>
 
-      <section className="px-4 pb-4 pt-6">
-        <h2 className="text-sm font-semibold">Today&apos;s attendance</h2>
+      <section className="px-4 pb-8 pt-6 lg:px-0 lg:pt-8">
+        <h2 className="text-sm font-semibold lg:text-base">Today&apos;s attendance</h2>
         {!isPending && attendance.length === 0 && (
           <p className="mt-3 text-xs text-muted-foreground">
             No one has checked in today yet.
           </p>
         )}
-        <ul className="mt-3 divide-y divide-border">
+        <ul className="mt-3 divide-y divide-border lg:rounded-2xl lg:border lg:border-border lg:bg-card lg:px-4">
           {attendance.map((r) => (
             <li key={r.id} className="flex items-center gap-3 py-3">
               <Avatar
@@ -135,6 +139,6 @@ function AdminPage() {
           ))}
         </ul>
       </section>
-    </PhoneShell>
+    </DashboardShell>
   );
 }

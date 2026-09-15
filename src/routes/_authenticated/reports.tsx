@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
-import { PhoneShell } from "@/components/PhoneShell";
+import { DashboardShell } from "@/components/DashboardShell";
 import { Button } from "@/components/ui/button";
 import { getReports } from "@/lib/tracking.functions";
 import { fmtClock } from "@/lib/tracking.types";
@@ -100,16 +100,20 @@ function ReportsPage() {
   }
 
   return (
-    <PhoneShell nav={false}>
-      <header className="flex items-center gap-3 px-4 pt-5">
-        <Link to="/admin" aria-label="Back" className="text-muted-foreground">
-          <ChevronLeft className="h-5 w-5" />
-        </Link>
-        <h1 className="flex-1 text-center text-base font-semibold">Reports &amp; Analytics</h1>
-        <span className="w-5" />
-      </header>
+    <DashboardShell
+      title="Reports & Analytics"
+      mobileHeader={
+        <header className="flex items-center gap-3 px-4 pt-5">
+          <Link to="/admin" aria-label="Back" className="text-muted-foreground">
+            <ChevronLeft className="h-5 w-5" />
+          </Link>
+          <h1 className="flex-1 text-center text-base font-semibold">Reports &amp; Analytics</h1>
+          <span className="w-5" />
+        </header>
+      }
+    >
 
-      <div className="hide-scrollbar mt-4 flex gap-2 overflow-x-auto px-4">
+      <div className="hide-scrollbar mt-4 flex gap-2 overflow-x-auto px-4 lg:mt-0 lg:px-0">
         {ranges.map((r) => (
           <Button
             key={r}
@@ -123,7 +127,7 @@ function ReportsPage() {
         ))}
       </div>
 
-      <div className="screen-enter mt-4 grid grid-cols-2 gap-3 px-4">
+      <div className="screen-enter mt-4 grid grid-cols-2 gap-3 px-4 lg:grid-cols-4 lg:gap-5 lg:px-0 lg:pt-2">
         {summary.map((s) => (
           <div key={s.label} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
             <p className={`text-2xl font-bold ${s.tone}`}>{s.value}</p>
@@ -132,7 +136,7 @@ function ReportsPage() {
         ))}
       </div>
 
-      <section className="px-4 pt-6">
+      <section className="px-4 pt-6 lg:px-0 lg:pt-8">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-primary" />
           <h2 className="flex-1 text-sm font-semibold">Attendance trend</h2>
@@ -159,7 +163,7 @@ function ReportsPage() {
         </div>
       </section>
 
-      <section className="px-4 pt-6">
+      <section className="px-4 pt-6 lg:px-0 lg:pt-8">
         <h2 className="text-sm font-semibold">Team-wise performance</h2>
         <ul className="mt-3 space-y-2">
           {teams.map((t) => (
@@ -179,7 +183,7 @@ function ReportsPage() {
         </ul>
       </section>
 
-      <section className="px-4 pb-6 pt-6">
+      <section className="px-4 pb-8 pt-6 lg:px-0 lg:pt-8">
         <h2 className="text-sm font-semibold">Attendance report</h2>
         <div className="hide-scrollbar mt-3 flex gap-2 overflow-x-auto">
           {filters.map((f) => (
@@ -235,6 +239,6 @@ function ReportsPage() {
           <Download className="mr-2 h-4 w-4" /> Export report (CSV)
         </Button>
       </section>
-    </PhoneShell>
+    </DashboardShell>
   );
 }
