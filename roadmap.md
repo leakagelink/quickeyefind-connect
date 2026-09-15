@@ -31,4 +31,4 @@
 - [x] Manage teams / departments
 - [x] Search & filter employees
 - [x] Modern, responsive UI/UX with animations
-- [ ] Scalable & secure backend — needs Lovable Cloud (awaiting user go-ahead)
+- [x] Scalable & secure backend — Lovable Cloud enabled
