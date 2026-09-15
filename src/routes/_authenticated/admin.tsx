@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Avatar } from "@/components/Avatar";
 import { PhoneShell } from "@/components/PhoneShell";
+import { LogoManager } from "@/components/LogoManager";
 import { getAdminOverview } from "@/lib/tracking.functions";
 import { fmtClock } from "@/lib/tracking.types";
 
