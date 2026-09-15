@@ -28,9 +28,13 @@ export const Route = createFileRoute("/users")({
 
 const filters = ["All", "Online", "Offline", "Field Sales", "Delivery", "Service"];
 
+// Unique locations for the location filter chips
+const areas = ["All locations", ...Array.from(new Set(employees.map((e) => e.area)))];
+
 function UsersPage() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
+  const [area, setArea] = useState("All locations");
 
   const list = employees
     .filter((e) =>
@@ -42,7 +46,16 @@ function UsersPage() {
             ? !e.online
             : e.team === filter,
     )
-    .filter((e) => e.name.toLowerCase().includes(query.toLowerCase()));
+    .filter((e) => area === "All locations" || e.area === area)
+    .filter((e) => {
+      const q = query.toLowerCase();
+      return (
+        e.name.toLowerCase().includes(q) ||
+        e.phone.replace(/\s/g, "").includes(query.replace(/\s/g, "")) ||
+        e.area.toLowerCase().includes(q) ||
+        e.team.toLowerCase().includes(q)
+      );
+    });
 
   return (
     <PhoneShell>
